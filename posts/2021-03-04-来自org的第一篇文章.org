@@ -1,0 +1,72 @@
+#+title: 来自Org的第一篇文章
+#+date: <2021-03-04 19:09>
+#+filetags: Emacs life
+
+这是一篇用Emacs和Org编写的博客。
+
+* 缘起
+
+最近突然想写博客了，其实之前也断断续续的写过一些，从一开始的CSDN到Github Pages，从pelican到hugo。
+
+但是我感觉这些并不适合我。所以我有了一段用纸和笔手写博客的时光。随心所欲的写写画画，一切都是那么简单。
+
+然后中间略过一些事情。
+
+快进到我突然想写博客了。
+
+因为我平时一直在用Emacs，所以我选择的范围缩小到了[[https://orgmode.org/worg/org-blog-wiki.html][这么大]]。
+
+试用过ox-hugo，感觉太麻烦了。
+
+最终，忙里偷闲，在Emacs上配了[[https://github.com/bastibe/org-static-blog][org-static-blog]]。
+
+* org-static-blog
+
+这个博客生成工具给我的感觉就是simple and brute force。
+
+#+begin_src emacs-lisp
+(use-package org-static-blog
+  :bind
+  ("C-c b n" . org-static-blog-create-new-post)
+  ("C-c b p" . org-static-blog-publish)
+  :custom
+  (org-static-blog-publish-title fiery-blog-title)
+  (org-static-blog-publish-url fiery-blog-url)
+  (org-static-blog-publish-directory fiery-blog-directory)
+  (org-static-blog-posts-directory (concat fiery-blog-directory "posts/"))
+  (org-static-blog-drafts-directory (concat fiery-blog-directory "drafts/"))
+  (org-static-blog-enable-tags t)
+  (org-static-blog-use-preview t)
+  (org-export-with-toc nil)
+  (org-export-with-section-numbers nil)
+  (org-static-blog-page-header
+   "<meta name=\"author\" content=\"fieryzig\">
+<meta name=\"referrer\" content=\"no-referrer\">
+<link href=\"static/style.css\" rel=\"stylesheet\" type=\"text/css\" />
+")
+  (org-static-blog-page-preamble
+   "<div class=\"header\">
+<h1 class=\"title\"><a href=\"https://fieryzig.github.io\">fieryzig</a></h1>
+<p class=\"text-muted\">fieryzig's blog</p>
+<ul class=\"list-inline\">
+<li class=\"list-inline-item\"><a href=\"https://fieryzig.github.io\">About</a></li>
+</ul>
+</div>")
+  (org-static-blog-page-postamble ""))
+#+end_src
+
+因为不太擅长前端（HTML/CSS/JS），所以现在还很简陋，之后会逐渐完善的。
+
+* 结语
+
+最后立个flag，讲讲之后博客上会写些什么。
+
+- 2020年是我比较复杂的一年，我想写写我关于2020年的回忆，以及2020年完成的和未完成的一些东西
+- 自己之后学习的一些笔记
+  + 游戏开发
+  + 图形学/渲染
+  + Emacs
+  + 厨艺？
+  + 其他好玩的东西
+- 日常生活的感悟和吐槽
+
