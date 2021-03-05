@@ -15,13 +15,15 @@ a:hover .title, a:visited .title, a:link .title, a:active .title
     text-decoration: none;
 }
 
+.text-muted {
+    color: #777;
+    margin: 0 0 10px;
+}
+
 /*----------------------------------------*/
 @font-face {
     font-family: 'The Girl Next Door';
     src: url('thegirlnextdoor.ttf');
-}
-
-.header {
 }
 
 #preamble .title {
@@ -29,6 +31,24 @@ a:hover .title, a:visited .title, a:link .title, a:active .title
     margin-bottom: 1rem;
     font-family: 'The Girl Next Door';
     text-decoration: none;
+    text-align: center;
+}
+
+#preamble .header {
+    text-align: center;
+}
+
+#preamble .list-inline {
+    display: inline-block;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-align: center;
+}
+#preamble .list-inline-item {
+    padding: 8px;
+    float: left;
 }
 
 #content .taglist {
@@ -36,9 +56,18 @@ a:hover .title, a:visited .title, a:link .title, a:active .title
 }
 
 #preamble {
+    margin: auto;
+    width: 70%;
+}
+
+#content {
+    margin: auto;
+    width: 70%;
 }
 
 #postamble {
+    margin: auto;
+    width: 70%;
 }
 
 #archive {
