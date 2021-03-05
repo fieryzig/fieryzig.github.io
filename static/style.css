@@ -10,7 +10,7 @@ a:hover {
     color: #0085a1;
 }
 
-a:hover, a:visited, a:link, a:active
+a:hover .title, a:visited .title, a:link .title, a:active .title
 {
     text-decoration: none;
 }
@@ -24,16 +24,15 @@ a:hover, a:visited, a:link, a:active
 .header {
 }
 
-.header .title {
+#preamble .title {
     font-weight: bold;
     margin-bottom: 1rem;
     font-family: 'The Girl Next Door';
     text-decoration: none;
 }
 
-#content {
-    background-color: #fff;
-    padding: 1.5rem 0;
+#content .taglist {
+    margin-bottom: 2.5rem;
 }
 
 #preamble {

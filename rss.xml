@@ -4,7 +4,7 @@
 <title><![CDATA[Fieryzig's Blog]]></title>
 <description><![CDATA[Fieryzig's Blog]]></description>
 <link>https://fieryzig.github.io</link>
-<lastBuildDate>周四, 04 3月 2021 19:48:17 +0800</lastBuildDate>
+<lastBuildDate>周五, 05 3月 2021 21:19:50 +0800</lastBuildDate>
 <item>
   <title><![CDATA[来自Org的第一篇文章]]></title>
   <description><![CDATA[
@@ -12,9 +12,9 @@
 这是一篇用Emacs和Org编写的博客。
 </p>
 
-<div id="outline-container-org02b8f8e" class="outline-2">
-<h2 id="org02b8f8e">缘起</h2>
-<div class="outline-text-2" id="text-org02b8f8e">
+<div id="outline-container-orgd48b428" class="outline-2">
+<h2 id="orgd48b428">缘起</h2>
+<div class="outline-text-2" id="text-orgd48b428">
 <p>
 最近突然想写博客了，其实之前也断断续续的写过一些，从一开始的CSDN到Github Pages，从pelican到hugo。
 </p>
@@ -45,9 +45,9 @@
 </div>
 </div>
 
-<div id="outline-container-org09c690c" class="outline-2">
-<h2 id="org09c690c">org-static-blog</h2>
-<div class="outline-text-2" id="text-org09c690c">
+<div id="outline-container-org4b5cbd4" class="outline-2">
+<h2 id="org4b5cbd4">org-static-blog</h2>
+<div class="outline-text-2" id="text-org4b5cbd4">
 <p>
 这个博客生成工具给我的感觉就是simple and brute force。
 </p>
@@ -90,9 +90,9 @@
 </div>
 </div>
 
-<div id="outline-container-org14d2608" class="outline-2">
-<h2 id="org14d2608">结语</h2>
-<div class="outline-text-2" id="text-org14d2608">
+<div id="outline-container-org55ad993" class="outline-2">
+<h2 id="org55ad993">结语</h2>
+<div class="outline-text-2" id="text-org55ad993">
 <p>
 最后立个flag，讲讲之后博客上会写些什么。
 </p>
