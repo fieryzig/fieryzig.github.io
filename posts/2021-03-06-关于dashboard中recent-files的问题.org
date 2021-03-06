@@ -1,0 +1,196 @@
+#+title: 关于dashboard中recent files的问题
+#+date: <2021-03-06 18:35>
+#+filetags: Emacs
+
+最近在使用dashboard的时候，发现了一个不完美的地方，就是经常发现Recent Files里面会出现Org Agenda相关的文件。这些文件占据了Recent Files的位置，导致无法显示出我真正想要的最近文件。
+搜索了一下，发现[[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]]的issues里面已经有了相关的问题，并且！已经有[[https://github.com/emacs-dashboard/emacs-dashboard/pull/83][PR]]修复了这个问题！
+看来事情并不是这么简单。
+
+* 问题的复现
+
+因为自己只是在日常使用中经常遇到这个问题，并没有留意发生的条件，所以问题的第一步是复现这个问题。
+
+首先发现重新启动Emacs显示的结果是正确的（Recent Files里面没有Org文件）
+
+由于我的Emacs里面配置了 ~tempbuf~ ，所以10s钟后会自动kill掉org的buffer。
+
+经过多次实验，我发现，10s前我在dashboard按 ~g~ ，刷新dashboard，显示正确。但是10s后（即org buffer被kill后），Recent Files里面就会出现Org文件。
+
+一个问题此时变成了多个问题：
+
+- 为什么org buffer被kill后，刷新dashboard会显示错误？
+- 为什么启动Emacs又是正确的？
+- 怎么解决这个问题？怎么让dashboard一直显示正确？
+
+* 继续探究
+
+** 从dashboard出发
+
+dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是怎么修复的。
+重点就在 ~dashboard-insert-startupify-lists~ 这个函数里
+#+begin_src emacs-lisp
+(defun dashboard-insert-startupify-lists ()
+  "Insert the list of widgets into the buffer."
+  (interactive)
+  (let ((buffer-exists (buffer-live-p (get-buffer dashboard-buffer-name)))
+        (recentf-is-on (recentf-enabled-p))
+        (origial-recentf-list recentf-list)
+        (dashboard-num-recents (or (cdr (assoc 'recents dashboard-items)) 0))
+        (max-line-length 0))
+    ;; disable recentf mode,
+    ;; so we don't flood the recent files list with org mode files
+    ;; do this by making a copy of the part of the list we'll use
+    ;; let dashboard widgets change that
+    ;; then restore the orginal list afterwards
+    ;; (this avoids many saves/loads that would result from
+    ;; disabling/enabling recentf-mode)
+    (when recentf-is-on
+      (setq recentf-list (seq-take recentf-list dashboard-num-recents)))
+    (when (or (not (eq dashboard-buffer-last-width (window-width)))
+              (not buffer-exists))
+      (setq dashboard-banner-length (window-width)
+            dashboard-buffer-last-width dashboard-banner-length)
+      (with-current-buffer (get-buffer-create dashboard-buffer-name)
+        (let ((buffer-read-only nil))
+          (erase-buffer)
+          (dashboard-insert-banner)
+          (dashboard-insert-page-break)
+          (setq dashboard--section-starts nil)
+          (mapc (lambda (els)
+                  (let* ((el (or (car-safe els) els))
+                         (list-size
+                          (or (cdr-safe els)
+                              dashboard-items-default-length))
+                         (item-generator
+                          (cdr-safe (assoc el dashboard-item-generators))))
+                    (add-to-list 'dashboard--section-starts (point))
+                    (funcall item-generator list-size)
+                    (when recentf-is-on
+                      (setq recentf-list origial-recentf-list))
+                    (setq max-line-length
+                          (max max-line-length (dashboard-maximum-section-length)))
+                    (dashboard-insert-page-break)))
+                dashboard-items)
+          (when dashboard-center-content
+            (when dashboard--section-starts
+              (goto-char (car (last dashboard--section-starts))))
+            (let ((margin (floor (/ (max (- (window-width) max-line-length) 0) 2))))
+              (while (not (eobp))
+                (unless (string-suffix-p (thing-at-point 'line) dashboard-page-separator)
+                  (insert (make-string margin ?\ )))
+                (forward-line 1))))
+          (dashboard-insert-footer))
+        (goto-char (point-min))
+        (dashboard-mode)))
+    (when recentf-is-on
+      (setq recentf-list origial-recentf-list))))
+#+end_src
+
+从中间的注释中可以看出，是先用 ~origial-recentf-list~ 将 ~recentf-list~ 记录下来，在最后再复原回去。
+
+看起来好像没什么不对的。但是既然不对了，说明一定是 ~recentf-list~ 这个变量出了问题。并且 ~kill-buffer~ 之前没问题， ~kill-buffer~ 之后出了问题，是不是 ~kill-buffer~ 的时候改变了 ~recentf-list~ 呢
+
+** 到recentf中去
+
+[[https://gitlab.com/basil-conto/emacs/blob/master/lisp/recentf.el#L1030][点这里]]看recentf源码
+
+#+begin_src emacs-lisp
+(defconst recentf-used-hooks
+  '(
+    (find-file-hook       recentf-track-opened-file)
+    (write-file-functions recentf-track-opened-file)
+    (kill-buffer-hook     recentf-track-closed-file)
+    (kill-emacs-hook      recentf-save-list)
+    )
+  "Hooks used by recentf.")
+#+end_src
+
+从这里可以看出它的逻辑是 ~find-file~ 和 ~write-file~ 的时候，将文件放入 ~recentf-list~ 中； ~kill-buffer~ 的时候将文件从 ~recentf-list~ 中删除；退出Emacs的时候将 ~recentf-list~ 写入文件。
+
+看来这里也没什么问题。那问题究竟出在哪里？
+
+** 一个猜想
+
+先不考虑第一次启动Emacs的话，问题变得简单了一些。存在org文件buffer的时候，刷新dashbaord没问题。不存在org文件buffer的时候，刷新dashboard就会出错。所以，一定是刷新dashbaord的时候，agenda会打开org文件，如果org文件已经在buffer中了，就不会 ~find-file~ ；否则调用 ~find-file~ 就会触发 ~recentf-track-opened-file~ ，将文件加入到 ~recentf-list~ 中。
+
+但是每次在刷新dashboard之后（无论是否正确），我将 ~recentf-list~ 打印出来，结果都是不包含org文件的。这应该是dashboard刷新后，用之前的origial的复原了 ~recentf-list~ 。
+
+也就是 ~recentf-list~ 刷新之前和刷新之后都是好的。而最终展现的Recent Files却是错的。
+
+真相只有一个了，那就是生成Recent Files的时候，用的 ~recentf-list~ 是错的。
+
+** 深入dashboard-widgets
+
+#+begin_src emacs-lisp
+(defun dashboard-insert-recents (list-size)
+  "Add the list of LIST-SIZE items from recently edited files."
+  (setq dashboard--recentf-cache-item-format nil)
+  (recentf-mode)
+  (let ((inhibit-message t) (message-log-max nil))
+    (recentf-cleanup))
+  (dashboard-insert-section
+   "Recent Files:"
+   (dashboard-shorten-paths recentf-list 'dashboard-recentf-alist)
+   list-size
+   (dashboard-get-shortcut 'recents)
+   `(lambda (&rest ignore)
+      (find-file-existing (dashboard-expand-path-alist ,el dashboard-recentf-alist)))
+   (let* ((file (dashboard-expand-path-alist el dashboard-recentf-alist))
+          (filename (dashboard-f-filename file))
+          (path (dashboard-extract-key-path-alist el dashboard-recentf-alist)))
+     (cl-case dashboard-recentf-show-base
+       (align
+        (unless dashboard--recentf-cache-item-format
+          (let* ((len-align (dashboard--get-align-length dashboard-recentf-alist))
+                 (new-fmt (dashboard--generate-align-format
+                           dashboard-recentf-item-format len-align)))
+            (setq dashboard--recentf-cache-item-format new-fmt)))
+        (format dashboard--recentf-cache-item-format filename path))
+       (nil (format dashboard-recentf-item-format filename path))
+       (t path)))))
+#+end_src
+
+在这里我们终于发现 ~recentf-list~ 。而这时的 ~recentf-list~ 应该是没有复原过的。所以才会输出错误的结果。
+
+在这里，我们还注意到 ~(recentf-mode)~ 。也就是说 ~recentf-mode~ 是在这里启动的。这也是为什么重新启动Emacs显示正确的原因。因为dashboard先处理Agenda的org文件，此时还没有开启recentf-mode，所以结果是对的。
+
+为了验证这一点，我将 ~dashbaord-items~ 里面的顺序调整了一下，把recentf放在agenda的前面。果然，再次启动Emacs，结果也是错误的。
+
+** 结论
+
+所以，这个[[https://github.com/emacs-dashboard/emacs-dashboard/pull/83/][PR]]压根没有修复Recent Files显示Agenda org files这个issue。它只在同时满足 *首次启动Emacs* 和 *agenda在recentf前面* 这两个条件时，它才会Work。
+
+最后说一下我的解决方案：
+
+1. 修改dashboard的逻辑
+
+在上面dashboard的代码中加两行，作用是每次完成一个item之后，都复原一次 ~recentf-list~ 。
+#+begin_src emacs-lisp
+          (mapc (lambda (els)
+                  (let* ((el (or (car-safe els) els))
+                         (list-size
+                          (or (cdr-safe els)
+                              dashboard-items-default-length))
+                         (item-generator
+                          (cdr-safe (assoc el dashboard-item-generators))))
+                    (add-to-list 'dashboard--section-starts (point))
+                    (funcall item-generator list-size)
+                    (when recentf-is-on
+                      (setq recentf-list origial-recentf-list))
+                    (setq max-line-length
+                          (max max-line-length (dashboard-maximum-section-length)))
+                    (dashboard-insert-page-break)))
+                dashboard-items)
+#+end_src
+这个方法，好处是简单容易，效率高，缺点是修改了dashboard，在代码没被合到master之前会比较难受。
+
+2. 重新定义g按键
+#+begin_src emacs-lisp
+(define-key dashboard-mode-map (kbd "g") #'my-dashboard-g)
+#+end_src
+
+~my-dashboard-g~ 的实现有两种思路，一是在refresh之前，把recentf-mode关闭了。这个方法的缺点在上面的PR里面的注释里说道了，就是读写文件，效率差。二是直接refresh两次，因为第一次refresh的时候org文件的buffer是不在的，所以错了，第二次时org文件的buffer的文件还在，因此结果是正确的。
+
+重新定义g按键的方法，并没有修复问题，只是看起来ok的trick，并且只能agenda在recentf的前面。
+
+因此还是推荐第1种做法，改日有时间提个PR吧。

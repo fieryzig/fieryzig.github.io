@@ -1,13 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0">
-<channel>
-<title><![CDATA[Les Frites]]></title>
-<description><![CDATA[Les Frites]]></description>
-<link>https://fieryzig.github.io</link>
-<lastBuildDate>周六, 06 3月 2021 21:46:11 +0800</lastBuildDate>
-<item>
-  <title><![CDATA[关于dashboard中recent files的问题]]></title>
-  <description><![CDATA[
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="alternate"
+      type="application/rss+xml"
+      href="https://fieryzig.github.io/rss.xml"
+      title="RSS feed for https://fieryzig.github.io">
+<title>关于dashboard中recent files的问题</title>
+<meta name="author" content="fieryzig">
+<meta name="referrer" content="no-referrer">
+<link href="static/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="preamble" class="status"><div class="header">
+<h1><a href="https://fieryzig.github.io" class="title">Les Frites</a></h1>
+<p class="text-muted">fieryzig's blog</p>
+<ul class="list-inline">
+<li class="list-inline-item"><a href="https://fieryzig.github.io/about.html">About</a></li>
+<li class="list-inline-item"><a href="https://fieryzig.github.io/tags.html">Tags</a></li>
+</ul>
+</div></div>
+<div id="content">
+<div class="post-date">06 3月 2021</div><h1 class="post-title"><a href="https://fieryzig.github.io/2021-03-06-关于dashboard中recent-files的问题.html">关于dashboard中recent files的问题</a></h1>
 <p>
 最近在使用dashboard的时候，发现了一个不完美的地方，就是经常发现Recent Files里面会出现Org Agenda相关的文件。这些文件占据了Recent Files的位置，导致无法显示出我真正想要的最近文件。
 搜索了一下，发现<a href="https://github.com/emacs-dashboard/emacs-dashboard">dashboard</a>的issues里面已经有了相关的问题，并且！已经有<a href="https://github.com/emacs-dashboard/emacs-dashboard/pull/83">PR</a>修复了这个问题！
@@ -284,122 +298,7 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 </div>
-<div class="taglist"><a href="https://fieryzig.github.io/tags.html">Tags</a>: <a href="https://fieryzig.github.io/tag-emacs.html">Emacs</a> </div>]]></description>
-  <category><![CDATA[Emacs]]></category>
-  <link>https://fieryzig.github.io/2021-03-06-关于dashboard中recent-files的问题.html</link>
-  <pubDate>周六, 06 3月 2021 18:35:00 +0800</pubDate>
-</item>
-<item>
-  <title><![CDATA[来自Org的第一篇文章]]></title>
-  <description><![CDATA[
-<p>
-这是一篇用Emacs和Org编写的博客。
-</p>
-
-<div id="outline-container-orga31f32d" class="outline-2">
-<h2 id="orga31f32d">缘起</h2>
-<div class="outline-text-2" id="text-orga31f32d">
-<p>
-最近突然想写博客了，其实之前也断断续续的写过一些，从一开始的CSDN到Github Pages，从pelican到hugo。
-</p>
-
-<p>
-但是我感觉这些并不适合我。所以我有了一段用纸和笔手写博客的时光。随心所欲的写写画画，一切都是那么简单。
-</p>
-
-<p>
-然后中间略过一些事情。
-</p>
-
-<p>
-快进到我突然想写博客了。
-</p>
-
-<p>
-因为我平时一直在用Emacs，所以我选择的范围缩小到了<a href="https://orgmode.org/worg/org-blog-wiki.html">这么大</a>。
-</p>
-
-<p>
-试用过ox-hugo，感觉太麻烦了。
-</p>
-
-<p>
-最终，忙里偷闲，在Emacs上配了<a href="https://github.com/bastibe/org-static-blog">org-static-blog</a>。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org8c3430d" class="outline-2">
-<h2 id="org8c3430d">org-static-blog</h2>
-<div class="outline-text-2" id="text-org8c3430d">
-<p>
-这个博客生成工具给我的感觉就是simple and brute force。
-</p>
-
-<div class="org-src-container">
-<pre class="src src-emacs-lisp">(use-package org-static-blog
-  :bind
-  ("C-c b n" . org-static-blog-create-new-post)
-  ("C-c b p" . org-static-blog-publish)
-  :custom
-  (org-static-blog-publish-title fiery-blog-title)
-  (org-static-blog-publish-url fiery-blog-url)
-  (org-static-blog-publish-directory fiery-blog-directory)
-  (org-static-blog-posts-directory (concat fiery-blog-directory "posts/"))
-  (org-static-blog-drafts-directory (concat fiery-blog-directory "drafts/"))
-  (org-static-blog-enable-tags t)
-  (org-static-blog-use-preview t)
-  (org-export-with-toc nil)
-  (org-export-with-section-numbers nil)
-  (org-static-blog-page-header
-   "&lt;meta name=\"author\" content=\"fieryzig\"&gt;
-&lt;meta name=\"referrer\" content=\"no-referrer\"&gt;
-&lt;link href=\"static/style.css\" rel=\"stylesheet\" type=\"text/css\" /&gt;
-")
-  (org-static-blog-page-preamble
-   "&lt;div class=\"header\"&gt;
-&lt;h1 class=\"title\"&gt;&lt;a href=\"https://fieryzig.github.io\"&gt;fieryzig&lt;/a&gt;&lt;/h1&gt;
-&lt;p class=\"text-muted\"&gt;fieryzig's blog&lt;/p&gt;
-&lt;ul class=\"list-inline\"&gt;
-&lt;li class=\"list-inline-item\"&gt;&lt;a href=\"https://fieryzig.github.io\"&gt;About&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;")
-  (org-static-blog-page-postamble ""))
-</pre>
-</div>
-
-<p>
-因为不太擅长前端（HTML/CSS/JS），所以现在还很简陋，之后会逐渐完善的。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org9c95583" class="outline-2">
-<h2 id="org9c95583">结语</h2>
-<div class="outline-text-2" id="text-org9c95583">
-<p>
-最后立个flag，讲讲之后博客上会写些什么。
-</p>
-
-<ul class="org-ul">
-<li>2020年是我比较复杂的一年，我想写写我关于2020年的回忆，以及2020年完成的和未完成的一些东西</li>
-<li>自己之后学习的一些笔记
-<ul class="org-ul">
-<li>游戏开发</li>
-<li>图形学/渲染</li>
-<li>Emacs</li>
-<li>厨艺？</li>
-<li>其他好玩的东西</li>
-</ul></li>
-<li>日常生活的感悟和吐槽</li>
-</ul>
-</div>
-</div>
-<div class="taglist"><a href="https://fieryzig.github.io/tags.html">Tags</a>: <a href="https://fieryzig.github.io/tag-emacs.html">Emacs</a> <a href="https://fieryzig.github.io/tag-life.html">life</a> </div>]]></description>
-  <category><![CDATA[Emacs]]></category>
-  <category><![CDATA[life]]></category>
-  <link>https://fieryzig.github.io/2021-03-04-来自org的第一篇文章.html</link>
-  <pubDate>周四, 04 3月 2021 19:09:00 +0800</pubDate>
-</item>
-</channel>
-</rss>
+<div class="taglist"><a href="https://fieryzig.github.io/tags.html">Tags</a>: <a href="https://fieryzig.github.io/tag-emacs.html">Emacs</a> </div></div>
+<div id="postamble" class="status"></div>
+</body>
+</html>
