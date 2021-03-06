@@ -28,9 +28,9 @@
 看来事情并不是这么简单。
 </p>
 
-<div id="outline-container-orgf0557d0" class="outline-2">
-<h2 id="orgf0557d0">问题的复现</h2>
-<div class="outline-text-2" id="text-orgf0557d0">
+<div id="outline-container-org2b216f1" class="outline-2">
+<h2 id="org2b216f1">问题的复现</h2>
+<div class="outline-text-2" id="text-org2b216f1">
 <p>
 因为自己只是在日常使用中经常遇到这个问题，并没有留意发生的条件，所以问题的第一步是复现这个问题。
 </p>
@@ -59,13 +59,13 @@
 </div>
 </div>
 
-<div id="outline-container-org3ee81db" class="outline-2">
-<h2 id="org3ee81db">继续探究</h2>
-<div class="outline-text-2" id="text-org3ee81db">
+<div id="outline-container-orgd7e7dfd" class="outline-2">
+<h2 id="orgd7e7dfd">继续探究</h2>
+<div class="outline-text-2" id="text-orgd7e7dfd">
 </div>
-<div id="outline-container-orgf0fc51b" class="outline-3">
-<h3 id="orgf0fc51b">从dashboard出发</h3>
-<div class="outline-text-3" id="text-orgf0fc51b">
+<div id="outline-container-org5aee6f0" class="outline-3">
+<h3 id="org5aee6f0">从dashboard出发</h3>
+<div class="outline-text-3" id="text-org5aee6f0">
 <p>
 dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是怎么修复的。
 重点就在 <code>dashboard-insert-startupify-lists</code> 这个函数里
@@ -139,9 +139,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org84f3345" class="outline-3">
-<h3 id="org84f3345">到recentf中去</h3>
-<div class="outline-text-3" id="text-org84f3345">
+<div id="outline-container-orgde41cd1" class="outline-3">
+<h3 id="orgde41cd1">到recentf中去</h3>
+<div class="outline-text-3" id="text-orgde41cd1">
 <p>
 <a href="https://gitlab.com/basil-conto/emacs/blob/master/lisp/recentf.el#L1030">点这里</a>看recentf源码
 </p>
@@ -168,9 +168,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org3e2e3f6" class="outline-3">
-<h3 id="org3e2e3f6">一个猜想</h3>
-<div class="outline-text-3" id="text-org3e2e3f6">
+<div id="outline-container-orgc06be89" class="outline-3">
+<h3 id="orgc06be89">一个猜想</h3>
+<div class="outline-text-3" id="text-orgc06be89">
 <p>
 先不考虑第一次启动Emacs的话，问题变得简单了一些。存在org文件buffer的时候，刷新dashbaord没问题。不存在org文件buffer的时候，刷新dashboard就会出错。所以，一定是刷新dashbaord的时候，agenda会打开org文件，如果org文件已经在buffer中了，就不会 <code>find-file</code> ；否则调用 <code>find-file</code> 就会触发 <code>recentf-track-opened-file</code> ，将文件加入到 <code>recentf-list</code> 中。
 </p>
@@ -189,9 +189,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org1ec7ba7" class="outline-3">
-<h3 id="org1ec7ba7">深入dashboard-widgets</h3>
-<div class="outline-text-3" id="text-org1ec7ba7">
+<div id="outline-container-orga2c6682" class="outline-3">
+<h3 id="orga2c6682">深入dashboard-widgets</h3>
+<div class="outline-text-3" id="text-orga2c6682">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #51afef;">defun</span> <span style="color: #c678dd;">dashboard-insert-recents</span> (list-size)
   <span style="color: #83898d;">"Add the list of LIST-SIZE items from recently edited files."</span>
@@ -235,10 +235,11 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </p>
 </div>
 </div>
+</div>
 
-<div id="outline-container-org89e8c6b" class="outline-3">
-<h3 id="org89e8c6b">结论</h3>
-<div class="outline-text-3" id="text-org89e8c6b">
+<div id="outline-container-org5762614" class="outline-2">
+<h2 id="org5762614">结论</h2>
+<div class="outline-text-2" id="text-org5762614">
 <p>
 所以，这个<a href="https://github.com/emacs-dashboard/emacs-dashboard/pull/83/">PR</a>压根没有修复Recent Files显示Agenda org files这个issue。它只在同时满足 <b>首次启动Emacs</b> 和 <b>agenda在recentf前面</b> 这两个条件时，它才会Work。
 </p>
@@ -295,7 +296,6 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 <p>
 因此还是推荐第1种做法，改日有时间提个PR吧。
 </p>
-</div>
 </div>
 </div>
 <div class="taglist"><a href="https://fieryzig.github.io/tags.html">Tags</a>: <a href="https://fieryzig.github.io/tag-emacs.html">Emacs</a> </div></div>
