@@ -7,14 +7,13 @@
 (package-install 'htmlize)
 
 (setq fiery-blog-title "Les Frites")
-(setq fiery-blog-directory "./")
 (setq fiery-blog-url "https://fieryzig.github.io")
 
 (setq org-static-blog-publish-title fiery-blog-title)
 (setq org-static-blog-publish-url fiery-blog-url)
 (setq org-static-blog-publish-directory fiery-blog-directory)
-(setq org-static-blog-posts-directory (concat fiery-blog-directory "posts/"))
-(setq org-static-blog-drafts-directory (concat fiery-blog-directory "drafts/"))
+(setq org-static-blog-posts-directory "posts/")
+(setq org-static-blog-drafts-directory "drafts/")
 (setq org-static-blog-enable-tags t)
 (setq org-static-blog-use-preview t)
 (setq org-static-blog-preview-ellipsis
