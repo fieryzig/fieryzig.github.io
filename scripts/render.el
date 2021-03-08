@@ -11,7 +11,7 @@
 
 (setq org-static-blog-publish-title fiery-blog-title)
 (setq org-static-blog-publish-url fiery-blog-url)
-(setq org-static-blog-publish-directory fiery-blog-directory)
+(setq org-static-blog-publish-directory "./")
 (setq org-static-blog-posts-directory "posts/")
 (setq org-static-blog-drafts-directory "drafts/")
 (setq org-static-blog-enable-tags t)
