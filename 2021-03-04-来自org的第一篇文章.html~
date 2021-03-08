@@ -21,14 +21,14 @@
 </ul>
 </div></div>
 <div id="content">
-<div class="post-date">04 Mar 2021</div><h1 class="post-title"><a href="https://fieryzig.github.io/2021-03-04-来自org的第一篇文章.html">来自Org的第一篇文章</a></h1>
+<div class="post-date">04 3月 2021</div><h1 class="post-title"><a href="https://fieryzig.github.io/2021-03-04-来自org的第一篇文章.html">来自Org的第一篇文章</a></h1>
 <p>
 这是一篇用Emacs和Org编写的博客。
 </p>
 
-<div id="outline-container-orgee8ca8a" class="outline-2">
-<h2 id="orgee8ca8a">缘起</h2>
-<div class="outline-text-2" id="text-orgee8ca8a">
+<div id="outline-container-orga31f32d" class="outline-2">
+<h2 id="orga31f32d">缘起</h2>
+<div class="outline-text-2" id="text-orga31f32d">
 <p>
 最近突然想写博客了，其实之前也断断续续的写过一些，从一开始的CSDN到Github Pages，从pelican到hugo。
 </p>
@@ -59,42 +59,42 @@
 </div>
 </div>
 
-<div id="outline-container-orgcb3ccd5" class="outline-2">
-<h2 id="orgcb3ccd5">org-static-blog</h2>
-<div class="outline-text-2" id="text-orgcb3ccd5">
+<div id="outline-container-org8c3430d" class="outline-2">
+<h2 id="org8c3430d">org-static-blog</h2>
+<div class="outline-text-2" id="text-org8c3430d">
 <p>
 这个博客生成工具给我的感觉就是simple and brute force。
 </p>
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package org-static-blog
-  <span style="font-weight: bold;">:bind</span>
-  (<span style="font-style: italic;">"C-c b n"</span> . org-static-blog-create-new-post)
-  (<span style="font-style: italic;">"C-c b p"</span> . org-static-blog-publish)
-  <span style="font-weight: bold;">:custom</span>
+  :bind
+  ("C-c b n" . org-static-blog-create-new-post)
+  ("C-c b p" . org-static-blog-publish)
+  :custom
   (org-static-blog-publish-title fiery-blog-title)
   (org-static-blog-publish-url fiery-blog-url)
   (org-static-blog-publish-directory fiery-blog-directory)
-  (org-static-blog-posts-directory (concat fiery-blog-directory <span style="font-style: italic;">"posts/"</span>))
-  (org-static-blog-drafts-directory (concat fiery-blog-directory <span style="font-style: italic;">"drafts/"</span>))
+  (org-static-blog-posts-directory (concat fiery-blog-directory "posts/"))
+  (org-static-blog-drafts-directory (concat fiery-blog-directory "drafts/"))
   (org-static-blog-enable-tags t)
   (org-static-blog-use-preview t)
   (org-export-with-toc nil)
   (org-export-with-section-numbers nil)
   (org-static-blog-page-header
-   <span style="font-style: italic;">"&lt;meta name=\"author\" content=\"fieryzig\"&gt;</span>
-<span style="font-style: italic;">&lt;meta name=\"referrer\" content=\"no-referrer\"&gt;</span>
-<span style="font-style: italic;">&lt;link href=\"static/style.css\" rel=\"stylesheet\" type=\"text/css\" /&gt;</span>
-<span style="font-style: italic;">"</span>)
+   "&lt;meta name=\"author\" content=\"fieryzig\"&gt;
+&lt;meta name=\"referrer\" content=\"no-referrer\"&gt;
+&lt;link href=\"static/style.css\" rel=\"stylesheet\" type=\"text/css\" /&gt;
+")
   (org-static-blog-page-preamble
-   <span style="font-style: italic;">"&lt;div class=\"header\"&gt;</span>
-<span style="font-style: italic;">&lt;h1 class=\"title\"&gt;&lt;a href=\"https://fieryzig.github.io\"&gt;fieryzig&lt;/a&gt;&lt;/h1&gt;</span>
-<span style="font-style: italic;">&lt;p class=\"text-muted\"&gt;fieryzig's blog&lt;/p&gt;</span>
-<span style="font-style: italic;">&lt;ul class=\"list-inline\"&gt;</span>
-<span style="font-style: italic;">&lt;li class=\"list-inline-item\"&gt;&lt;a href=\"https://fieryzig.github.io\"&gt;About&lt;/a&gt;&lt;/li&gt;</span>
-<span style="font-style: italic;">&lt;/ul&gt;</span>
-<span style="font-style: italic;">&lt;/div&gt;"</span>)
-  (org-static-blog-page-postamble <span style="font-style: italic;">""</span>))
+   "&lt;div class=\"header\"&gt;
+&lt;h1 class=\"title\"&gt;&lt;a href=\"https://fieryzig.github.io\"&gt;fieryzig&lt;/a&gt;&lt;/h1&gt;
+&lt;p class=\"text-muted\"&gt;fieryzig's blog&lt;/p&gt;
+&lt;ul class=\"list-inline\"&gt;
+&lt;li class=\"list-inline-item\"&gt;&lt;a href=\"https://fieryzig.github.io\"&gt;About&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;")
+  (org-static-blog-page-postamble ""))
 </pre>
 </div>
 
@@ -104,9 +104,9 @@
 </div>
 </div>
 
-<div id="outline-container-orgb5c108b" class="outline-2">
-<h2 id="orgb5c108b">结语</h2>
-<div class="outline-text-2" id="text-orgb5c108b">
+<div id="outline-container-org9c95583" class="outline-2">
+<h2 id="org9c95583">结语</h2>
+<div class="outline-text-2" id="text-org9c95583">
 <p>
 最后立个flag，讲讲之后博客上会写些什么。
 </p>

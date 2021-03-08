@@ -4,7 +4,7 @@
 <title><![CDATA[Les Frites]]></title>
 <description><![CDATA[Les Frites]]></description>
 <link>https://fieryzig.github.io</link>
-<lastBuildDate>周日, 07 3月 2021 22:46:12 +0800</lastBuildDate>
+<lastBuildDate>Mon, 08 Mar 2021 15:57:05 +0000</lastBuildDate>
 <item>
   <title><![CDATA[关于dashboard中recent files的问题]]></title>
   <description><![CDATA[
@@ -14,9 +14,9 @@
 看来事情并不是这么简单。
 </p>
 
-<div id="outline-container-orga4f10fb" class="outline-2">
-<h2 id="orga4f10fb">问题的复现</h2>
-<div class="outline-text-2" id="text-orga4f10fb">
+<div id="outline-container-org1e13043" class="outline-2">
+<h2 id="org1e13043">问题的复现</h2>
+<div class="outline-text-2" id="text-org1e13043">
 <p>
 因为自己只是在日常使用中经常遇到这个问题，并没有留意发生的条件，所以问题的第一步是复现这个问题。
 </p>
@@ -45,73 +45,73 @@
 </div>
 </div>
 
-<div id="outline-container-org6277bb9" class="outline-2">
-<h2 id="org6277bb9">继续探究</h2>
-<div class="outline-text-2" id="text-org6277bb9">
+<div id="outline-container-org798dc69" class="outline-2">
+<h2 id="org798dc69">继续探究</h2>
+<div class="outline-text-2" id="text-org798dc69">
 </div>
-<div id="outline-container-org0cb5afc" class="outline-3">
-<h3 id="org0cb5afc">从dashboard出发</h3>
-<div class="outline-text-3" id="text-org0cb5afc">
+<div id="outline-container-orgdfe4342" class="outline-3">
+<h3 id="orgdfe4342">从dashboard出发</h3>
+<div class="outline-text-3" id="text-orgdfe4342">
 <p>
 dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是怎么修复的。
 重点就在 <code>dashboard-insert-startupify-lists</code> 这个函数里
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span style="color: #51afef;">defun</span> <span style="color: #c678dd;">dashboard-insert-startupify-lists</span> ()
-  <span style="color: #83898d;">"Insert the list of widgets into the buffer."</span>
-  (<span style="color: #51afef;">interactive</span>)
-  (<span style="color: #51afef;">let</span> ((buffer-exists (buffer-live-p (get-buffer dashboard-buffer-name)))
+<pre class="src src-emacs-lisp">(<span style="font-weight: bold;">defun</span> <span style="font-weight: bold;">dashboard-insert-startupify-lists</span> ()
+  <span style="font-style: italic;">"Insert the list of widgets into the buffer."</span>
+  (<span style="font-weight: bold;">interactive</span>)
+  (<span style="font-weight: bold;">let</span> ((buffer-exists (buffer-live-p (get-buffer dashboard-buffer-name)))
         (recentf-is-on (recentf-enabled-p))
         (origial-recentf-list recentf-list)
-        (dashboard-num-recents (<span style="color: #51afef;">or</span> (cdr (assoc 'recents dashboard-items)) 0))
+        (dashboard-num-recents (<span style="font-weight: bold;">or</span> (cdr (assoc 'recents dashboard-items)) 0))
         (max-line-length 0))
-    <span style="color: #5B6268;">;; </span><span style="color: #5B6268;">disable recentf mode,</span>
-    <span style="color: #5B6268;">;; </span><span style="color: #5B6268;">so we don't flood the recent files list with org mode files</span>
-    <span style="color: #5B6268;">;; </span><span style="color: #5B6268;">do this by making a copy of the part of the list we'll use</span>
-    <span style="color: #5B6268;">;; </span><span style="color: #5B6268;">let dashboard widgets change that</span>
-    <span style="color: #5B6268;">;; </span><span style="color: #5B6268;">then restore the orginal list afterwards</span>
-    <span style="color: #5B6268;">;; </span><span style="color: #5B6268;">(this avoids many saves/loads that would result from</span>
-    <span style="color: #5B6268;">;; </span><span style="color: #5B6268;">disabling/enabling recentf-mode)</span>
-    (<span style="color: #51afef;">when</span> recentf-is-on
-      (<span style="color: #51afef;">setq</span> recentf-list (seq-take recentf-list dashboard-num-recents)))
-    (<span style="color: #51afef;">when</span> (<span style="color: #51afef;">or</span> (not (eq dashboard-buffer-last-width (window-width)))
+    <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">disable recentf mode,</span>
+    <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">so we don't flood the recent files list with org mode files</span>
+    <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">do this by making a copy of the part of the list we'll use</span>
+    <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">let dashboard widgets change that</span>
+    <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">then restore the orginal list afterwards</span>
+    <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">(this avoids many saves/loads that would result from</span>
+    <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">disabling/enabling recentf-mode)</span>
+    (<span style="font-weight: bold;">when</span> recentf-is-on
+      (<span style="font-weight: bold;">setq</span> recentf-list (seq-take recentf-list dashboard-num-recents)))
+    (<span style="font-weight: bold;">when</span> (<span style="font-weight: bold;">or</span> (not (eq dashboard-buffer-last-width (window-width)))
               (not buffer-exists))
-      (<span style="color: #51afef;">setq</span> dashboard-banner-length (window-width)
+      (<span style="font-weight: bold;">setq</span> dashboard-banner-length (window-width)
             dashboard-buffer-last-width dashboard-banner-length)
-      (<span style="color: #51afef;">with-current-buffer</span> (get-buffer-create dashboard-buffer-name)
-        (<span style="color: #51afef;">let</span> ((buffer-read-only nil))
+      (<span style="font-weight: bold;">with-current-buffer</span> (get-buffer-create dashboard-buffer-name)
+        (<span style="font-weight: bold;">let</span> ((buffer-read-only nil))
           (erase-buffer)
           (dashboard-insert-banner)
           (dashboard-insert-page-break)
-          (<span style="color: #51afef;">setq</span> dashboard--section-starts nil)
-          (mapc (<span style="color: #51afef;">lambda</span> (els)
-                  (<span style="color: #51afef;">let*</span> ((el (<span style="color: #51afef;">or</span> (car-safe els) els))
+          (<span style="font-weight: bold;">setq</span> dashboard--section-starts nil)
+          (mapc (<span style="font-weight: bold;">lambda</span> (els)
+                  (<span style="font-weight: bold;">let*</span> ((el (<span style="font-weight: bold;">or</span> (car-safe els) els))
                          (list-size
-                          (<span style="color: #51afef;">or</span> (cdr-safe els)
+                          (<span style="font-weight: bold;">or</span> (cdr-safe els)
                               dashboard-items-default-length))
                          (item-generator
                           (cdr-safe (assoc el dashboard-item-generators))))
                     (add-to-list 'dashboard--section-starts (point))
                     (funcall item-generator list-size)
-                    (<span style="color: #51afef;">when</span> recentf-is-on
-                      (<span style="color: #51afef;">setq</span> recentf-list origial-recentf-list))
-                    (<span style="color: #51afef;">setq</span> max-line-length
+                    (<span style="font-weight: bold;">when</span> recentf-is-on
+                      (<span style="font-weight: bold;">setq</span> recentf-list origial-recentf-list))
+                    (<span style="font-weight: bold;">setq</span> max-line-length
                           (max max-line-length (dashboard-maximum-section-length)))
                     (dashboard-insert-page-break)))
                 dashboard-items)
-          (<span style="color: #51afef;">when</span> dashboard-center-content
-            (<span style="color: #51afef;">when</span> dashboard--section-starts
+          (<span style="font-weight: bold;">when</span> dashboard-center-content
+            (<span style="font-weight: bold;">when</span> dashboard--section-starts
               (goto-char (car (last dashboard--section-starts))))
-            (<span style="color: #51afef;">let</span> ((margin (floor (/ (max (- (window-width) max-line-length) 0) 2))))
-              (<span style="color: #51afef;">while</span> (not (eobp))
-                (<span style="color: #51afef;">unless</span> (string-suffix-p (thing-at-point 'line) dashboard-page-separator)
+            (<span style="font-weight: bold;">let</span> ((margin (floor (/ (max (- (window-width) max-line-length) 0) 2))))
+              (<span style="font-weight: bold;">while</span> (not (eobp))
+                (<span style="font-weight: bold;">unless</span> (string-suffix-p (thing-at-point 'line) dashboard-page-separator)
                   (insert (make-string margin ?\ )))
                 (forward-line 1))))
           (dashboard-insert-footer))
         (goto-char (point-min))
         (dashboard-mode)))
-    (<span style="color: #51afef;">when</span> recentf-is-on
-      (<span style="color: #51afef;">setq</span> recentf-list origial-recentf-list))))
+    (<span style="font-weight: bold;">when</span> recentf-is-on
+      (<span style="font-weight: bold;">setq</span> recentf-list origial-recentf-list))))
 </pre>
 </div>
 
@@ -125,22 +125,22 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-orge7db8b2" class="outline-3">
-<h3 id="orge7db8b2">到recentf中去</h3>
-<div class="outline-text-3" id="text-orge7db8b2">
+<div id="outline-container-orgfad31ee" class="outline-3">
+<h3 id="orgfad31ee">到recentf中去</h3>
+<div class="outline-text-3" id="text-orgfad31ee">
 <p>
 <a href="https://gitlab.com/basil-conto/emacs/blob/master/lisp/recentf.el#L1030">点这里</a>看recentf源码
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span style="color: #51afef;">defconst</span> <span style="color: #dcaeea;">recentf-used-hooks</span>
+<pre class="src src-emacs-lisp">(<span style="font-weight: bold;">defconst</span> <span style="font-weight: bold; font-style: italic;">recentf-used-hooks</span>
   '(
     (find-file-hook       recentf-track-opened-file)
     (write-file-functions recentf-track-opened-file)
     (kill-buffer-hook     recentf-track-closed-file)
     (kill-emacs-hook      recentf-save-list)
     )
-  <span style="color: #83898d;">"Hooks used by recentf."</span>)
+  <span style="font-style: italic;">"Hooks used by recentf."</span>)
 </pre>
 </div>
 
@@ -154,9 +154,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org97b8244" class="outline-3">
-<h3 id="org97b8244">一个猜想</h3>
-<div class="outline-text-3" id="text-org97b8244">
+<div id="outline-container-org7a756a1" class="outline-3">
+<h3 id="org7a756a1">一个猜想</h3>
+<div class="outline-text-3" id="text-org7a756a1">
 <p>
 先不考虑第一次启动Emacs的话，问题变得简单了一些。存在org文件buffer的时候，刷新dashbaord没问题。不存在org文件buffer的时候，刷新dashboard就会出错。所以，一定是刷新dashbaord的时候，agenda会打开org文件，如果org文件已经在buffer中了，就不会 <code>find-file</code> ；否则调用 <code>find-file</code> 就会触发 <code>recentf-track-opened-file</code> ，将文件加入到 <code>recentf-list</code> 中。
 </p>
@@ -175,33 +175,33 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org29a5d33" class="outline-3">
-<h3 id="org29a5d33">深入dashboard-widgets</h3>
-<div class="outline-text-3" id="text-org29a5d33">
+<div id="outline-container-orgd7863cd" class="outline-3">
+<h3 id="orgd7863cd">深入dashboard-widgets</h3>
+<div class="outline-text-3" id="text-orgd7863cd">
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span style="color: #51afef;">defun</span> <span style="color: #c678dd;">dashboard-insert-recents</span> (list-size)
-  <span style="color: #83898d;">"Add the list of LIST-SIZE items from recently edited files."</span>
-  (<span style="color: #51afef;">setq</span> dashboard--recentf-cache-item-format nil)
+<pre class="src src-emacs-lisp">(<span style="font-weight: bold;">defun</span> <span style="font-weight: bold;">dashboard-insert-recents</span> (list-size)
+  <span style="font-style: italic;">"Add the list of LIST-SIZE items from recently edited files."</span>
+  (<span style="font-weight: bold;">setq</span> dashboard--recentf-cache-item-format nil)
   (recentf-mode)
-  (<span style="color: #51afef;">let</span> ((inhibit-message t) (message-log-max nil))
+  (<span style="font-weight: bold;">let</span> ((inhibit-message t) (message-log-max nil))
     (recentf-cleanup))
-  (<span style="color: #51afef;">dashboard-insert-section</span>
-   <span style="color: #98be65;">"Recent Files:"</span>
+  (dashboard-insert-section
+   <span style="font-style: italic;">"Recent Files:"</span>
    (dashboard-shorten-paths recentf-list 'dashboard-recentf-alist)
    list-size
    (dashboard-get-shortcut 'recents)
-   `(<span style="color: #51afef;">lambda</span> (<span style="color: #ECBE7B;">&amp;rest</span> ignore)
+   `(<span style="font-weight: bold;">lambda</span> (<span style="font-weight: bold; text-decoration: underline;">&amp;rest</span> ignore)
       (find-file-existing (dashboard-expand-path-alist ,el dashboard-recentf-alist)))
-   (<span style="color: #51afef;">let*</span> ((file (dashboard-expand-path-alist el dashboard-recentf-alist))
+   (<span style="font-weight: bold;">let*</span> ((file (dashboard-expand-path-alist el dashboard-recentf-alist))
           (filename (dashboard-f-filename file))
           (path (dashboard-extract-key-path-alist el dashboard-recentf-alist)))
-     (<span style="color: #51afef;">cl-case</span> dashboard-recentf-show-base
+     (<span style="font-weight: bold;">cl-case</span> dashboard-recentf-show-base
        (align
-        (<span style="color: #51afef;">unless</span> dashboard--recentf-cache-item-format
-          (<span style="color: #51afef;">let*</span> ((len-align (dashboard--get-align-length dashboard-recentf-alist))
+        (<span style="font-weight: bold;">unless</span> dashboard--recentf-cache-item-format
+          (<span style="font-weight: bold;">let*</span> ((len-align (dashboard--get-align-length dashboard-recentf-alist))
                  (new-fmt (dashboard--generate-align-format
                            dashboard-recentf-item-format len-align)))
-            (<span style="color: #51afef;">setq</span> dashboard--recentf-cache-item-format new-fmt)))
+            (<span style="font-weight: bold;">setq</span> dashboard--recentf-cache-item-format new-fmt)))
         (format dashboard--recentf-cache-item-format filename path))
        (nil (format dashboard-recentf-item-format filename path))
        (t path)))))
@@ -223,9 +223,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-orgdeaceb3" class="outline-2">
-<h2 id="orgdeaceb3">结论</h2>
-<div class="outline-text-2" id="text-orgdeaceb3">
+<div id="outline-container-orgf7988cf" class="outline-2">
+<h2 id="orgf7988cf">结论</h2>
+<div class="outline-text-2" id="text-orgf7988cf">
 <p>
 所以，这个<a href="https://github.com/emacs-dashboard/emacs-dashboard/pull/83/">PR</a>压根没有修复Recent Files显示Agenda org files这个issue。它只在同时满足 <b>首次启动Emacs</b> 和 <b>agenda在recentf前面</b> 这两个条件时，它才会Work。
 </p>
@@ -235,25 +235,25 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </p>
 </div>
 
-<div id="outline-container-orgcdd6f98" class="outline-3">
-<h3 id="orgcdd6f98">1.修改dashboard的逻辑</h3>
-<div class="outline-text-3" id="text-orgcdd6f98">
+<div id="outline-container-org81f8f39" class="outline-3">
+<h3 id="org81f8f39">1.修改dashboard的逻辑</h3>
+<div class="outline-text-3" id="text-org81f8f39">
 <p>
 在上面dashboard的代码中加两行，作用是每次完成一个item之后，都复原一次 <code>recentf-list</code> 。
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(mapc (<span style="color: #51afef;">lambda</span> (els)
-        (<span style="color: #51afef;">let*</span> ((el (<span style="color: #51afef;">or</span> (car-safe els) els))
+<pre class="src src-emacs-lisp">(mapc (<span style="font-weight: bold;">lambda</span> (els)
+        (<span style="font-weight: bold;">let*</span> ((el (<span style="font-weight: bold;">or</span> (car-safe els) els))
                (list-size
-                (<span style="color: #51afef;">or</span> (cdr-safe els)
+                (<span style="font-weight: bold;">or</span> (cdr-safe els)
                     dashboard-items-default-length))
                (item-generator
                 (cdr-safe (assoc el dashboard-item-generators))))
           (add-to-list 'dashboard--section-starts (point))
           (funcall item-generator list-size)
-          (<span style="color: #51afef;">when</span> recentf-is-on
-            (<span style="color: #51afef;">setq</span> recentf-list origial-recentf-list))
-          (<span style="color: #51afef;">setq</span> max-line-length
+          (<span style="font-weight: bold;">when</span> recentf-is-on
+            (<span style="font-weight: bold;">setq</span> recentf-list origial-recentf-list))
+          (<span style="font-weight: bold;">setq</span> max-line-length
                 (max max-line-length (dashboard-maximum-section-length)))
           (dashboard-insert-page-break)))
       dashboard-items)
@@ -265,11 +265,11 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-orgdbc1626" class="outline-3">
-<h3 id="orgdbc1626">2.重新定义g按键</h3>
-<div class="outline-text-3" id="text-orgdbc1626">
+<div id="outline-container-org4ff3d99" class="outline-3">
+<h3 id="org4ff3d99">2.重新定义g按键</h3>
+<div class="outline-text-3" id="text-org4ff3d99">
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(define-key dashboard-mode-map (kbd <span style="color: #98be65;">"g"</span>) #'my-dashboard-g)
+<pre class="src src-emacs-lisp">(define-key dashboard-mode-map (kbd <span style="font-style: italic;">"g"</span>) #'my-dashboard-g)
 </pre>
 </div>
 
@@ -290,7 +290,7 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 <div class="taglist"><a href="https://fieryzig.github.io/tags.html">Tags</a>: <a href="https://fieryzig.github.io/tag-emacs.html">Emacs</a> </div>]]></description>
   <category><![CDATA[Emacs]]></category>
   <link>https://fieryzig.github.io/2021-03-06-关于dashboard中recent-files的问题.html</link>
-  <pubDate>周六, 06 3月 2021 18:35:00 +0800</pubDate>
+  <pubDate>Sat, 06 Mar 2021 18:35:00 +0000</pubDate>
 </item>
 <item>
   <title><![CDATA[来自Org的第一篇文章]]></title>
@@ -299,9 +299,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 这是一篇用Emacs和Org编写的博客。
 </p>
 
-<div id="outline-container-orga31f32d" class="outline-2">
-<h2 id="orga31f32d">缘起</h2>
-<div class="outline-text-2" id="text-orga31f32d">
+<div id="outline-container-orgee8ca8a" class="outline-2">
+<h2 id="orgee8ca8a">缘起</h2>
+<div class="outline-text-2" id="text-orgee8ca8a">
 <p>
 最近突然想写博客了，其实之前也断断续续的写过一些，从一开始的CSDN到Github Pages，从pelican到hugo。
 </p>
@@ -332,42 +332,42 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org8c3430d" class="outline-2">
-<h2 id="org8c3430d">org-static-blog</h2>
-<div class="outline-text-2" id="text-org8c3430d">
+<div id="outline-container-orgcb3ccd5" class="outline-2">
+<h2 id="orgcb3ccd5">org-static-blog</h2>
+<div class="outline-text-2" id="text-orgcb3ccd5">
 <p>
 这个博客生成工具给我的感觉就是simple and brute force。
 </p>
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package org-static-blog
-  :bind
-  ("C-c b n" . org-static-blog-create-new-post)
-  ("C-c b p" . org-static-blog-publish)
-  :custom
+  <span style="font-weight: bold;">:bind</span>
+  (<span style="font-style: italic;">"C-c b n"</span> . org-static-blog-create-new-post)
+  (<span style="font-style: italic;">"C-c b p"</span> . org-static-blog-publish)
+  <span style="font-weight: bold;">:custom</span>
   (org-static-blog-publish-title fiery-blog-title)
   (org-static-blog-publish-url fiery-blog-url)
   (org-static-blog-publish-directory fiery-blog-directory)
-  (org-static-blog-posts-directory (concat fiery-blog-directory "posts/"))
-  (org-static-blog-drafts-directory (concat fiery-blog-directory "drafts/"))
+  (org-static-blog-posts-directory (concat fiery-blog-directory <span style="font-style: italic;">"posts/"</span>))
+  (org-static-blog-drafts-directory (concat fiery-blog-directory <span style="font-style: italic;">"drafts/"</span>))
   (org-static-blog-enable-tags t)
   (org-static-blog-use-preview t)
   (org-export-with-toc nil)
   (org-export-with-section-numbers nil)
   (org-static-blog-page-header
-   "&lt;meta name=\"author\" content=\"fieryzig\"&gt;
-&lt;meta name=\"referrer\" content=\"no-referrer\"&gt;
-&lt;link href=\"static/style.css\" rel=\"stylesheet\" type=\"text/css\" /&gt;
-")
+   <span style="font-style: italic;">"&lt;meta name=\"author\" content=\"fieryzig\"&gt;</span>
+<span style="font-style: italic;">&lt;meta name=\"referrer\" content=\"no-referrer\"&gt;</span>
+<span style="font-style: italic;">&lt;link href=\"static/style.css\" rel=\"stylesheet\" type=\"text/css\" /&gt;</span>
+<span style="font-style: italic;">"</span>)
   (org-static-blog-page-preamble
-   "&lt;div class=\"header\"&gt;
-&lt;h1 class=\"title\"&gt;&lt;a href=\"https://fieryzig.github.io\"&gt;fieryzig&lt;/a&gt;&lt;/h1&gt;
-&lt;p class=\"text-muted\"&gt;fieryzig's blog&lt;/p&gt;
-&lt;ul class=\"list-inline\"&gt;
-&lt;li class=\"list-inline-item\"&gt;&lt;a href=\"https://fieryzig.github.io\"&gt;About&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;")
-  (org-static-blog-page-postamble ""))
+   <span style="font-style: italic;">"&lt;div class=\"header\"&gt;</span>
+<span style="font-style: italic;">&lt;h1 class=\"title\"&gt;&lt;a href=\"https://fieryzig.github.io\"&gt;fieryzig&lt;/a&gt;&lt;/h1&gt;</span>
+<span style="font-style: italic;">&lt;p class=\"text-muted\"&gt;fieryzig's blog&lt;/p&gt;</span>
+<span style="font-style: italic;">&lt;ul class=\"list-inline\"&gt;</span>
+<span style="font-style: italic;">&lt;li class=\"list-inline-item\"&gt;&lt;a href=\"https://fieryzig.github.io\"&gt;About&lt;/a&gt;&lt;/li&gt;</span>
+<span style="font-style: italic;">&lt;/ul&gt;</span>
+<span style="font-style: italic;">&lt;/div&gt;"</span>)
+  (org-static-blog-page-postamble <span style="font-style: italic;">""</span>))
 </pre>
 </div>
 
@@ -377,9 +377,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org9c95583" class="outline-2">
-<h2 id="org9c95583">结语</h2>
-<div class="outline-text-2" id="text-org9c95583">
+<div id="outline-container-orgb5c108b" class="outline-2">
+<h2 id="orgb5c108b">结语</h2>
+<div class="outline-text-2" id="text-orgb5c108b">
 <p>
 最后立个flag，讲讲之后博客上会写些什么。
 </p>
@@ -402,7 +402,7 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
   <category><![CDATA[Emacs]]></category>
   <category><![CDATA[life]]></category>
   <link>https://fieryzig.github.io/2021-03-04-来自org的第一篇文章.html</link>
-  <pubDate>周四, 04 3月 2021 19:09:00 +0800</pubDate>
+  <pubDate>Thu, 04 Mar 2021 19:09:00 +0000</pubDate>
 </item>
 </channel>
 </rss>
