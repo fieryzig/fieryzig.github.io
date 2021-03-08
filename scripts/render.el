@@ -36,6 +36,6 @@
 <li class=\"list-inline-item\"><a href=\"https://fieryzig.github.io/tags.html\">Tags</a></li>
 </ul>
 </div>"))
-(setq org-static-blog-page-postamble ""))
+(setq org-static-blog-page-postamble "")
 
 (org-static-blog-publish)
