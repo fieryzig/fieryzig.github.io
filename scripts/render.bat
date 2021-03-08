@@ -2,4 +2,4 @@
 
 echo "Rendering HTML"
 
-emacs -nw --batch --load "./scripts/render.el"
+emacs -q -nw --batch --load "./scripts/render.el"

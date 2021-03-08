@@ -5,8 +5,9 @@
 
 (package-install 'use-package)
 (package-install 'htmlize)
-(defvar fiery-blog-title "Les Frites")
-(defvar fiery-blog-directory "./")
+(setq fiery-blog-title "Les Frites")
+(setq fiery-blog-directory "./")
+(setq fiery-blog-url "https://fieryzig.github.io")
 (use-package org-static-blog
   :custom
   (org-static-blog-publish-title fiery-blog-title)
