@@ -5,7 +5,6 @@
 
 (package-install 'use-package)
 (package-install 'htmlize)
-(package-install 'ox-html)
 (defvar fiery-blog-title "Les Frites")
 (defvar fiery-blog-directory "./")
 (use-package org-static-blog
