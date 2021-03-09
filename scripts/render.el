@@ -1,3 +1,5 @@
+(set-language-environment "UTF-8")
+(setq make-backup-files nil)
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (package-initialize)
