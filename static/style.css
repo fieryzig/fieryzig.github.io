@@ -73,6 +73,16 @@ a:hover .title, a:visited .title, a:link .title, a:active .title
 #archive {
 }
 
+code {
+    overflow:auto;width:auto;border:solid green;border-width:.1em .1em .1em .1em;padding:.0em .2em;border-radius:6px;
+    font-family: "Source Code Pro";
+}
+
 .org-src-container {
     background: #ffffff; overflow:auto;width:auto;border:solid green;border-width:.1em .1em .1em .8em;padding:.2em .6em;
 }
+
+.org-ol li:not(:last-child), .org-ul li:not(:last-child) {
+    margin-bottom: .8rem;
+}
+    
