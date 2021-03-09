@@ -72,3 +72,7 @@ a:hover .title, a:visited .title, a:link .title, a:active .title
 
 #archive {
 }
+
+.org-src-container {
+    background: #ffffff; overflow:auto;width:auto;border:solid green;border-width:.1em .1em .1em .8em;padding:.2em .6em;
+}
