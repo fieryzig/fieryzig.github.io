@@ -28,9 +28,9 @@
 看来事情并不是这么简单。
 </p>
 
-<div id="outline-container-orgb4e8662" class="outline-2">
-<h2 id="orgb4e8662">问题的复现</h2>
-<div class="outline-text-2" id="text-orgb4e8662">
+<div id="outline-container-org93cfe82" class="outline-2">
+<h2 id="org93cfe82">问题的复现</h2>
+<div class="outline-text-2" id="text-org93cfe82">
 <p>
 因为自己只是在日常使用中经常遇到这个问题，并没有留意发生的条件，所以问题的第一步是复现这个问题。
 </p>
@@ -59,13 +59,13 @@
 </div>
 </div>
 
-<div id="outline-container-orgfe73743" class="outline-2">
-<h2 id="orgfe73743">继续探究</h2>
-<div class="outline-text-2" id="text-orgfe73743">
+<div id="outline-container-orgd6fcc5a" class="outline-2">
+<h2 id="orgd6fcc5a">继续探究</h2>
+<div class="outline-text-2" id="text-orgd6fcc5a">
 </div>
-<div id="outline-container-org1e4c622" class="outline-3">
-<h3 id="org1e4c622">从dashboard出发</h3>
-<div class="outline-text-3" id="text-org1e4c622">
+<div id="outline-container-org21cb61f" class="outline-3">
+<h3 id="org21cb61f">从dashboard出发</h3>
+<div class="outline-text-3" id="text-org21cb61f">
 <p>
 dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是怎么修复的。
 重点就在 <code>dashboard-insert-startupify-lists</code> 这个函数里
@@ -139,9 +139,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org6a58805" class="outline-3">
-<h3 id="org6a58805">到recentf中去</h3>
-<div class="outline-text-3" id="text-org6a58805">
+<div id="outline-container-orgc97bb63" class="outline-3">
+<h3 id="orgc97bb63">到recentf中去</h3>
+<div class="outline-text-3" id="text-orgc97bb63">
 <p>
 <a href="https://gitlab.com/basil-conto/emacs/blob/master/lisp/recentf.el#L1030">点这里</a>看recentf源码
 </p>
@@ -168,9 +168,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org96503fa" class="outline-3">
-<h3 id="org96503fa">一个猜想</h3>
-<div class="outline-text-3" id="text-org96503fa">
+<div id="outline-container-orgfcf9ec7" class="outline-3">
+<h3 id="orgfcf9ec7">一个猜想</h3>
+<div class="outline-text-3" id="text-orgfcf9ec7">
 <p>
 先不考虑第一次启动Emacs的话，问题变得简单了一些。存在org文件buffer的时候，刷新dashbaord没问题。不存在org文件buffer的时候，刷新dashboard就会出错。所以，一定是刷新dashbaord的时候，agenda会打开org文件，如果org文件已经在buffer中了，就不会 <code>find-file</code> ；否则调用 <code>find-file</code> 就会触发 <code>recentf-track-opened-file</code> ，将文件加入到 <code>recentf-list</code> 中。
 </p>
@@ -189,9 +189,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org6f3312a" class="outline-3">
-<h3 id="org6f3312a">深入dashboard-widgets</h3>
-<div class="outline-text-3" id="text-org6f3312a">
+<div id="outline-container-orgf492d25" class="outline-3">
+<h3 id="orgf492d25">深入dashboard-widgets</h3>
+<div class="outline-text-3" id="text-orgf492d25">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="font-weight: bold;">defun</span> <span style="font-weight: bold;">dashboard-insert-recents</span> (list-size)
   <span style="font-style: italic;">"Add the list of LIST-SIZE items from recently edited files."</span>
@@ -237,9 +237,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org632a552" class="outline-2">
-<h2 id="org632a552">结论</h2>
-<div class="outline-text-2" id="text-org632a552">
+<div id="outline-container-org0604af1" class="outline-2">
+<h2 id="org0604af1">结论</h2>
+<div class="outline-text-2" id="text-org0604af1">
 <p>
 所以，这个<a href="https://github.com/emacs-dashboard/emacs-dashboard/pull/83/">PR</a>压根没有修复Recent Files显示Agenda org files这个issue。它只在同时满足 <b>首次启动Emacs</b> 和 <b>agenda在recentf前面</b> 这两个条件时，它才会Work。
 </p>
@@ -249,9 +249,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </p>
 </div>
 
-<div id="outline-container-org1b5fcbe" class="outline-3">
-<h3 id="org1b5fcbe">1.修改dashboard的逻辑</h3>
-<div class="outline-text-3" id="text-org1b5fcbe">
+<div id="outline-container-orgeb26453" class="outline-3">
+<h3 id="orgeb26453">1.修改dashboard的逻辑</h3>
+<div class="outline-text-3" id="text-orgeb26453">
 <p>
 在上面dashboard的代码中加两行，作用是每次完成一个item之后，都复原一次 <code>recentf-list</code> 。
 </p>
@@ -279,9 +279,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org3f11242" class="outline-3">
-<h3 id="org3f11242">2.重新定义g按键</h3>
-<div class="outline-text-3" id="text-org3f11242">
+<div id="outline-container-org53355ba" class="outline-3">
+<h3 id="org53355ba">2.重新定义g按键</h3>
+<div class="outline-text-3" id="text-org53355ba">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(define-key dashboard-mode-map (kbd <span style="font-style: italic;">"g"</span>) #'my-dashboard-g)
 </pre>
