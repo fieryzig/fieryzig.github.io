@@ -1,0 +1,122 @@
+#+title: 如何用手机发博客
+#+date: <2021-03-09 13:43>
+#+filetags: Emacs
+
+承接上一篇从手机发出来的博客，讲一下是如何实现的。不过，这篇是在电脑写的。
+
+(●'◡'●)
+
+* 缘起
+
+最初用静态博客的时候，觉得每次写好了markdown，还要生成一下HTML十分的麻烦。后来Github官推了Jekyll，并且有了Actions的功能，算是解决了这个通点吧。
+
+我这里的原理也是基于Github Actions去做的，下面具体的看一下是如何实现的吧。
+
+* 实现
+
+总共有三步
+
+** 把冰箱门打开
+
+这一步是把当前的仓库 ~checkout~ 下来。
+
+#+begin_src yaml
+- uses: actions/checkout@v2
+  with:
+    persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+    fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+#+end_src
+
+** 把大象装进去
+
+这一步先是安装 ~Emacs 27.1~ ，然后执行 ~render.bat~ 。
+
+#+begin_src yaml
+- uses: jcs090218/setup-emacs-windows@master
+  with:
+    version: 27.1
+      
+- name: Render HTML
+  run: ./scripts/render.bat
+#+end_src
+
+~render.bat~ 主要是调用 ~Emacs~ 去执行 ~render.el~ 脚本。
+
+~render.bat~:
+#+begin_src emacs-lisp
+emacs -q -nw --batch --load "./scripts/render.el"
+#+end_src
+
+~render.el~:
+#+begin_src emacs-lisp
+(set-language-environment "UTF-8")
+(setq make-backup-files nil)
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(package-initialize)
+(package-refresh-contents)
+
+(package-install 'org-static-blog)
+(package-install 'htmlize)
+
+(setq fiery-blog-title "Les Frites")
+(setq fiery-blog-url "https://fieryzig.github.io")
+
+(setq org-static-blog-publish-title fiery-blog-title)
+(setq org-static-blog-publish-url fiery-blog-url)
+(setq org-static-blog-publish-directory "./")
+(setq org-static-blog-posts-directory "posts/")
+(setq org-static-blog-drafts-directory "drafts/")
+(setq org-static-blog-enable-tags t)
+(setq org-static-blog-use-preview t)
+(setq org-static-blog-preview-ellipsis
+      "<p>......</p>")
+(setq org-static-blog-preview-link-p t)
+(setq org-export-with-toc nil)
+(setq org-export-with-section-numbers nil)
+(setq org-static-blog-page-header
+      "<meta name=\"author\" content=\"fieryzig\">
+<meta name=\"referrer\" content=\"no-referrer\">
+<link href=\"static/style.css\" rel=\"stylesheet\" type=\"text/css\" />
+")
+(setq org-static-blog-page-preamble (concat
+                                     "<div class=\"header\">
+<h1><a href=\"https://fieryzig.github.io\" class=\"title\">" fiery-blog-title "</a></h1>
+<p class=\"text-muted\">fieryzig's blog</p>
+<ul class=\"list-inline\">
+<li class=\"list-inline-item\"><a href=\"https://fieryzig.github.io/about.html\">About</a></li>
+<li class=\"list-inline-item\"><a href=\"https://fieryzig.github.io/tags.html\">Tags</a></li>
+</ul>
+</div>"))
+(setq org-static-blog-page-postamble "")
+
+(org-static-blog-publish)
+#+end_src
+
+这里有三个地方需要留意一下：
+
++ ~(set-language-environment "UTF-8")~ 设置默认的编码为 ~UTF-8~ 
++ ~(setq make-backup-files nil)~ 关闭备份文件
++ 记得最后调用 ~(org-static-blog-publish)~
+
+** 把冰箱门带上 
+
+最后把项目再Commit Push上，就OK了。
+
+#+begin_src yaml
+- name: Commit & Push
+  uses: actions-js/push@master
+  with:
+    github_token: ${{ secrets.GITHUB_TOKEN }}
+#+end_src
+
+
+完整的代码详见：
+
+https://github.com/fieryzig/fieryzig.github.io/blob/master/.github/workflows/main.yml
+
+* 参考
+
+1. https://gitlab.com/_zngguvnf/org-static-blog-example/-/blob/master/publish.el
+2. https://github.com/emacs-dashboard/emacs-dashboard/blob/master/.github/workflows/ci.yml
+3. https://docs.github.com/cn/actions
