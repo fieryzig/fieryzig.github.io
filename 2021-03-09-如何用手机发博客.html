@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="alternate"
+      type="application/rss+xml"
+      href="https://fieryzig.github.io/rss.xml"
+      title="RSS feed for https://fieryzig.github.io">
+<title>如何用手机发博客</title>
+<meta name="author" content="fieryzig">
+<meta name="referrer" content="no-referrer">
+<link href="static/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="preamble" class="status"><div class="header">
+<h1><a href="https://fieryzig.github.io" class="title">Les Frites</a></h1>
+<p class="text-muted">fieryzig's blog</p>
+<ul class="list-inline">
+<li class="list-inline-item"><a href="https://fieryzig.github.io/about.html">About</a></li>
+<li class="list-inline-item"><a href="https://fieryzig.github.io/tags.html">Tags</a></li>
+</ul>
+</div></div>
+<div id="content">
+<div class="post-date">09 Mar 2021</div><h1 class="post-title"><a href="https://fieryzig.github.io/2021-03-09-如何用手机发博客.html">如何用手机发博客</a></h1>
+<p>
+承接上一篇从手机发出来的博客，讲一下是如何实现的。不过，这篇是在电脑写的。
+</p>
+
+<p>
+(●'◡'●)
+</p>
+
+<div id="outline-container-orga784614" class="outline-2">
+<h2 id="orga784614">缘起</h2>
+<div class="outline-text-2" id="text-orga784614">
+<p>
+最初用静态博客的时候，觉得每次写好了markdown，还要生成一下HTML十分的麻烦。后来Github官推了Jekyll，并且有了Actions的功能，算是解决了这个通点吧。
+</p>
+
+<p>
+我这里的原理也是基于Github Actions去做的，下面具体的看一下是如何实现的吧。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org18613b3" class="outline-2">
+<h2 id="org18613b3">实现</h2>
+<div class="outline-text-2" id="text-org18613b3">
+<p>
+总共有三步
+</p>
+</div>
+
+<div id="outline-container-orga811301" class="outline-3">
+<h3 id="orga811301">把冰箱门打开</h3>
+<div class="outline-text-3" id="text-orga811301">
+<p>
+这一步是把当前的仓库 <code>checkout</code> 下来。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-yaml">- uses: actions/checkout@v2
+  with:
+    persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+    fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga4fad0e" class="outline-3">
+<h3 id="orga4fad0e">把大象装进去</h3>
+<div class="outline-text-3" id="text-orga4fad0e">
+<p>
+这一步先是安装 <code>Emacs 27.1</code> ，然后执行 <code>render.bat</code> 。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-yaml">- uses: jcs090218/setup-emacs-windows@master
+  with:
+    version: 27.1
+
+- name: Render HTML
+  run: ./scripts/render.bat
+</pre>
+</div>
+
+<p>
+<code>render.bat</code> 主要是调用 <code>Emacs</code> 去执行 <code>render.el</code> 脚本。
+</p>
+
+<p>
+<code>render.bat</code>:
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">emacs -q -nw --batch --load <span style="font-style: italic;">"./scripts/render.el"</span>
+</pre>
+</div>
+
+<p>
+<code>render.el</code>:
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(set-language-environment <span style="font-style: italic;">"UTF-8"</span>)
+(<span style="font-weight: bold;">setq</span> make-backup-files nil)
+(<span style="font-weight: bold;">require</span> '<span style="font-weight: bold; text-decoration: underline;">package</span>)
+(add-to-list 'package-archives '(<span style="font-style: italic;">"melpa"</span> . <span style="font-style: italic;">"http://melpa.org/packages/"</span>))
+(package-initialize)
+(package-refresh-contents)
+
+(package-install 'org-static-blog)
+(package-install 'htmlize)
+
+(<span style="font-weight: bold;">setq</span> fiery-blog-title <span style="font-style: italic;">"Les Frites"</span>)
+(<span style="font-weight: bold;">setq</span> fiery-blog-url <span style="font-style: italic;">"https://fieryzig.github.io"</span>)
+
+(<span style="font-weight: bold;">setq</span> org-static-blog-publish-title fiery-blog-title)
+(<span style="font-weight: bold;">setq</span> org-static-blog-publish-url fiery-blog-url)
+(<span style="font-weight: bold;">setq</span> org-static-blog-publish-directory <span style="font-style: italic;">"./"</span>)
+(<span style="font-weight: bold;">setq</span> org-static-blog-posts-directory <span style="font-style: italic;">"posts/"</span>)
+(<span style="font-weight: bold;">setq</span> org-static-blog-drafts-directory <span style="font-style: italic;">"drafts/"</span>)
+(<span style="font-weight: bold;">setq</span> org-static-blog-enable-tags t)
+(<span style="font-weight: bold;">setq</span> org-static-blog-use-preview t)
+(<span style="font-weight: bold;">setq</span> org-static-blog-preview-ellipsis
+      <span style="font-style: italic;">"&lt;p&gt;......&lt;/p&gt;"</span>)
+(<span style="font-weight: bold;">setq</span> org-static-blog-preview-link-p t)
+(<span style="font-weight: bold;">setq</span> org-export-with-toc nil)
+(<span style="font-weight: bold;">setq</span> org-export-with-section-numbers nil)
+(<span style="font-weight: bold;">setq</span> org-static-blog-page-header
+      <span style="font-style: italic;">"&lt;meta name=\"author\" content=\"fieryzig\"&gt;</span>
+<span style="font-style: italic;">&lt;meta name=\"referrer\" content=\"no-referrer\"&gt;</span>
+<span style="font-style: italic;">&lt;link href=\"static/style.css\" rel=\"stylesheet\" type=\"text/css\" /&gt;</span>
+<span style="font-style: italic;">"</span>)
+(<span style="font-weight: bold;">setq</span> org-static-blog-page-preamble (concat
+                                     <span style="font-style: italic;">"&lt;div class=\"header\"&gt;</span>
+<span style="font-style: italic;">&lt;h1&gt;&lt;a href=\"https://fieryzig.github.io\" class=\"title\"&gt;"</span> fiery-blog-title <span style="font-style: italic;">"&lt;/a&gt;&lt;/h1&gt;</span>
+<span style="font-style: italic;">&lt;p class=\"text-muted\"&gt;fieryzig's blog&lt;/p&gt;</span>
+<span style="font-style: italic;">&lt;ul class=\"list-inline\"&gt;</span>
+<span style="font-style: italic;">&lt;li class=\"list-inline-item\"&gt;&lt;a href=\"https://fieryzig.github.io/about.html\"&gt;About&lt;/a&gt;&lt;/li&gt;</span>
+<span style="font-style: italic;">&lt;li class=\"list-inline-item\"&gt;&lt;a href=\"https://fieryzig.github.io/tags.html\"&gt;Tags&lt;/a&gt;&lt;/li&gt;</span>
+<span style="font-style: italic;">&lt;/ul&gt;</span>
+<span style="font-style: italic;">&lt;/div&gt;"</span>))
+(<span style="font-weight: bold;">setq</span> org-static-blog-page-postamble <span style="font-style: italic;">""</span>)
+
+(org-static-blog-publish)
+</pre>
+</div>
+
+<p>
+这里有三个地方需要留意一下：
+</p>
+
+<ul class="org-ul">
+<li><code>(set-language-environment "UTF-8")</code> 设置默认的编码为 <code>UTF-8</code></li>
+<li><code>(setq make-backup-files nil)</code> 关闭备份文件</li>
+<li>记得最后调用 <code>(org-static-blog-publish)</code></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org52f08ba" class="outline-3">
+<h3 id="org52f08ba">把冰箱门带上</h3>
+<div class="outline-text-3" id="text-org52f08ba">
+<p>
+最后把项目再Commit Push上，就OK了。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-yaml">- name: Commit &amp; Push
+  uses: actions-js/push@master
+  with:
+    github_token: ${{ secrets.GITHUB_TOKEN }}
+</pre>
+</div>
+
+
+<p>
+完整的代码详见：
+</p>
+
+<p>
+<a href="https://github.com/fieryzig/fieryzig.github.io/blob/master/.github/workflows/main.yml">https://github.com/fieryzig/fieryzig.github.io/blob/master/.github/workflows/main.yml</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org08bc955" class="outline-2">
+<h2 id="org08bc955">参考</h2>
+<div class="outline-text-2" id="text-org08bc955">
+<ol class="org-ol">
+<li><a href="https://gitlab.com/_zngguvnf/org-static-blog-example/-/blob/master/publish.el">https://gitlab.com/_zngguvnf/org-static-blog-example/-/blob/master/publish.el</a></li>
+<li><a href="https://github.com/emacs-dashboard/emacs-dashboard/blob/master/.github/workflows/ci.yml">https://github.com/emacs-dashboard/emacs-dashboard/blob/master/.github/workflows/ci.yml</a></li>
+<li><a href="https://docs.github.com/cn/actions">https://docs.github.com/cn/actions</a></li>
+</ol>
+</div>
+</div>
+<div class="taglist"><a href="https://fieryzig.github.io/tags.html">Tags</a>: <a href="https://fieryzig.github.io/tag-emacs.html">Emacs</a> </div></div>
+<div id="postamble" class="status"></div>
+</body>
+</html>

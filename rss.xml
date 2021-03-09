@@ -4,7 +4,188 @@
 <title><![CDATA[Les Frites]]></title>
 <description><![CDATA[Les Frites]]></description>
 <link>https://fieryzig.github.io</link>
-<lastBuildDate>Tue, 09 Mar 2021 01:35:03 +0000</lastBuildDate>
+<lastBuildDate>Tue, 09 Mar 2021 06:09:04 +0000</lastBuildDate>
+<item>
+  <title><![CDATA[如何用手机发博客]]></title>
+  <description><![CDATA[
+<p>
+承接上一篇从手机发出来的博客，讲一下是如何实现的。不过，这篇是在电脑写的。
+</p>
+
+<p>
+(●'◡'●)
+</p>
+
+<div id="outline-container-orga784614" class="outline-2">
+<h2 id="orga784614">缘起</h2>
+<div class="outline-text-2" id="text-orga784614">
+<p>
+最初用静态博客的时候，觉得每次写好了markdown，还要生成一下HTML十分的麻烦。后来Github官推了Jekyll，并且有了Actions的功能，算是解决了这个通点吧。
+</p>
+
+<p>
+我这里的原理也是基于Github Actions去做的，下面具体的看一下是如何实现的吧。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org18613b3" class="outline-2">
+<h2 id="org18613b3">实现</h2>
+<div class="outline-text-2" id="text-org18613b3">
+<p>
+总共有三步
+</p>
+</div>
+
+<div id="outline-container-orga811301" class="outline-3">
+<h3 id="orga811301">把冰箱门打开</h3>
+<div class="outline-text-3" id="text-orga811301">
+<p>
+这一步是把当前的仓库 <code>checkout</code> 下来。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-yaml">- uses: actions/checkout@v2
+  with:
+    persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+    fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga4fad0e" class="outline-3">
+<h3 id="orga4fad0e">把大象装进去</h3>
+<div class="outline-text-3" id="text-orga4fad0e">
+<p>
+这一步先是安装 <code>Emacs 27.1</code> ，然后执行 <code>render.bat</code> 。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-yaml">- uses: jcs090218/setup-emacs-windows@master
+  with:
+    version: 27.1
+
+- name: Render HTML
+  run: ./scripts/render.bat
+</pre>
+</div>
+
+<p>
+<code>render.bat</code> 主要是调用 <code>Emacs</code> 去执行 <code>render.el</code> 脚本。
+</p>
+
+<p>
+<code>render.bat</code>:
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">emacs -q -nw --batch --load <span style="font-style: italic;">"./scripts/render.el"</span>
+</pre>
+</div>
+
+<p>
+<code>render.el</code>:
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(set-language-environment <span style="font-style: italic;">"UTF-8"</span>)
+(<span style="font-weight: bold;">setq</span> make-backup-files nil)
+(<span style="font-weight: bold;">require</span> '<span style="font-weight: bold; text-decoration: underline;">package</span>)
+(add-to-list 'package-archives '(<span style="font-style: italic;">"melpa"</span> . <span style="font-style: italic;">"http://melpa.org/packages/"</span>))
+(package-initialize)
+(package-refresh-contents)
+
+(package-install 'org-static-blog)
+(package-install 'htmlize)
+
+(<span style="font-weight: bold;">setq</span> fiery-blog-title <span style="font-style: italic;">"Les Frites"</span>)
+(<span style="font-weight: bold;">setq</span> fiery-blog-url <span style="font-style: italic;">"https://fieryzig.github.io"</span>)
+
+(<span style="font-weight: bold;">setq</span> org-static-blog-publish-title fiery-blog-title)
+(<span style="font-weight: bold;">setq</span> org-static-blog-publish-url fiery-blog-url)
+(<span style="font-weight: bold;">setq</span> org-static-blog-publish-directory <span style="font-style: italic;">"./"</span>)
+(<span style="font-weight: bold;">setq</span> org-static-blog-posts-directory <span style="font-style: italic;">"posts/"</span>)
+(<span style="font-weight: bold;">setq</span> org-static-blog-drafts-directory <span style="font-style: italic;">"drafts/"</span>)
+(<span style="font-weight: bold;">setq</span> org-static-blog-enable-tags t)
+(<span style="font-weight: bold;">setq</span> org-static-blog-use-preview t)
+(<span style="font-weight: bold;">setq</span> org-static-blog-preview-ellipsis
+      <span style="font-style: italic;">"&lt;p&gt;......&lt;/p&gt;"</span>)
+(<span style="font-weight: bold;">setq</span> org-static-blog-preview-link-p t)
+(<span style="font-weight: bold;">setq</span> org-export-with-toc nil)
+(<span style="font-weight: bold;">setq</span> org-export-with-section-numbers nil)
+(<span style="font-weight: bold;">setq</span> org-static-blog-page-header
+      <span style="font-style: italic;">"&lt;meta name=\"author\" content=\"fieryzig\"&gt;</span>
+<span style="font-style: italic;">&lt;meta name=\"referrer\" content=\"no-referrer\"&gt;</span>
+<span style="font-style: italic;">&lt;link href=\"static/style.css\" rel=\"stylesheet\" type=\"text/css\" /&gt;</span>
+<span style="font-style: italic;">"</span>)
+(<span style="font-weight: bold;">setq</span> org-static-blog-page-preamble (concat
+                                     <span style="font-style: italic;">"&lt;div class=\"header\"&gt;</span>
+<span style="font-style: italic;">&lt;h1&gt;&lt;a href=\"https://fieryzig.github.io\" class=\"title\"&gt;"</span> fiery-blog-title <span style="font-style: italic;">"&lt;/a&gt;&lt;/h1&gt;</span>
+<span style="font-style: italic;">&lt;p class=\"text-muted\"&gt;fieryzig's blog&lt;/p&gt;</span>
+<span style="font-style: italic;">&lt;ul class=\"list-inline\"&gt;</span>
+<span style="font-style: italic;">&lt;li class=\"list-inline-item\"&gt;&lt;a href=\"https://fieryzig.github.io/about.html\"&gt;About&lt;/a&gt;&lt;/li&gt;</span>
+<span style="font-style: italic;">&lt;li class=\"list-inline-item\"&gt;&lt;a href=\"https://fieryzig.github.io/tags.html\"&gt;Tags&lt;/a&gt;&lt;/li&gt;</span>
+<span style="font-style: italic;">&lt;/ul&gt;</span>
+<span style="font-style: italic;">&lt;/div&gt;"</span>))
+(<span style="font-weight: bold;">setq</span> org-static-blog-page-postamble <span style="font-style: italic;">""</span>)
+
+(org-static-blog-publish)
+</pre>
+</div>
+
+<p>
+这里有三个地方需要留意一下：
+</p>
+
+<ul class="org-ul">
+<li><code>(set-language-environment "UTF-8")</code> 设置默认的编码为 <code>UTF-8</code></li>
+<li><code>(setq make-backup-files nil)</code> 关闭备份文件</li>
+<li>记得最后调用 <code>(org-static-blog-publish)</code></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org52f08ba" class="outline-3">
+<h3 id="org52f08ba">把冰箱门带上</h3>
+<div class="outline-text-3" id="text-org52f08ba">
+<p>
+最后把项目再Commit Push上，就OK了。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-yaml">- name: Commit &amp; Push
+  uses: actions-js/push@master
+  with:
+    github_token: ${{ secrets.GITHUB_TOKEN }}
+</pre>
+</div>
+
+
+<p>
+完整的代码详见：
+</p>
+
+<p>
+<a href="https://github.com/fieryzig/fieryzig.github.io/blob/master/.github/workflows/main.yml">https://github.com/fieryzig/fieryzig.github.io/blob/master/.github/workflows/main.yml</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org08bc955" class="outline-2">
+<h2 id="org08bc955">参考</h2>
+<div class="outline-text-2" id="text-org08bc955">
+<ol class="org-ol">
+<li><a href="https://gitlab.com/_zngguvnf/org-static-blog-example/-/blob/master/publish.el">https://gitlab.com/_zngguvnf/org-static-blog-example/-/blob/master/publish.el</a></li>
+<li><a href="https://github.com/emacs-dashboard/emacs-dashboard/blob/master/.github/workflows/ci.yml">https://github.com/emacs-dashboard/emacs-dashboard/blob/master/.github/workflows/ci.yml</a></li>
+<li><a href="https://docs.github.com/cn/actions">https://docs.github.com/cn/actions</a></li>
+</ol>
+</div>
+</div>
+<div class="taglist"><a href="https://fieryzig.github.io/tags.html">Tags</a>: <a href="https://fieryzig.github.io/tag-emacs.html">Emacs</a> </div>]]></description>
+  <category><![CDATA[Emacs]]></category>
+  <link>https://fieryzig.github.io/2021-03-09-如何用手机发博客.html</link>
+  <pubDate>Tue, 09 Mar 2021 13:43:00 +0000</pubDate>
+</item>
 <item>
   <title><![CDATA[一篇来自手机的博客]]></title>
   <description><![CDATA[
@@ -24,9 +205,9 @@
 看来事情并不是这么简单。
 </p>
 
-<div id="outline-container-org5337545" class="outline-2">
-<h2 id="org5337545">问题的复现</h2>
-<div class="outline-text-2" id="text-org5337545">
+<div id="outline-container-org8ed82b5" class="outline-2">
+<h2 id="org8ed82b5">问题的复现</h2>
+<div class="outline-text-2" id="text-org8ed82b5">
 <p>
 因为自己只是在日常使用中经常遇到这个问题，并没有留意发生的条件，所以问题的第一步是复现这个问题。
 </p>
@@ -55,13 +236,13 @@
 </div>
 </div>
 
-<div id="outline-container-orga7e738a" class="outline-2">
-<h2 id="orga7e738a">继续探究</h2>
-<div class="outline-text-2" id="text-orga7e738a">
+<div id="outline-container-orgb5bb32d" class="outline-2">
+<h2 id="orgb5bb32d">继续探究</h2>
+<div class="outline-text-2" id="text-orgb5bb32d">
 </div>
-<div id="outline-container-orga9a50d3" class="outline-3">
-<h3 id="orga9a50d3">从dashboard出发</h3>
-<div class="outline-text-3" id="text-orga9a50d3">
+<div id="outline-container-orgc7d515f" class="outline-3">
+<h3 id="orgc7d515f">从dashboard出发</h3>
+<div class="outline-text-3" id="text-orgc7d515f">
 <p>
 dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是怎么修复的。
 重点就在 <code>dashboard-insert-startupify-lists</code> 这个函数里
@@ -135,9 +316,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org21ea38f" class="outline-3">
-<h3 id="org21ea38f">到recentf中去</h3>
-<div class="outline-text-3" id="text-org21ea38f">
+<div id="outline-container-orgc6a17e8" class="outline-3">
+<h3 id="orgc6a17e8">到recentf中去</h3>
+<div class="outline-text-3" id="text-orgc6a17e8">
 <p>
 <a href="https://gitlab.com/basil-conto/emacs/blob/master/lisp/recentf.el#L1030">点这里</a>看recentf源码
 </p>
@@ -164,9 +345,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org8b0fde6" class="outline-3">
-<h3 id="org8b0fde6">一个猜想</h3>
-<div class="outline-text-3" id="text-org8b0fde6">
+<div id="outline-container-org3b09aa9" class="outline-3">
+<h3 id="org3b09aa9">一个猜想</h3>
+<div class="outline-text-3" id="text-org3b09aa9">
 <p>
 先不考虑第一次启动Emacs的话，问题变得简单了一些。存在org文件buffer的时候，刷新dashbaord没问题。不存在org文件buffer的时候，刷新dashboard就会出错。所以，一定是刷新dashbaord的时候，agenda会打开org文件，如果org文件已经在buffer中了，就不会 <code>find-file</code> ；否则调用 <code>find-file</code> 就会触发 <code>recentf-track-opened-file</code> ，将文件加入到 <code>recentf-list</code> 中。
 </p>
@@ -185,9 +366,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org4ca7e45" class="outline-3">
-<h3 id="org4ca7e45">深入dashboard-widgets</h3>
-<div class="outline-text-3" id="text-org4ca7e45">
+<div id="outline-container-org8d2e12b" class="outline-3">
+<h3 id="org8d2e12b">深入dashboard-widgets</h3>
+<div class="outline-text-3" id="text-org8d2e12b">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="font-weight: bold;">defun</span> <span style="font-weight: bold;">dashboard-insert-recents</span> (list-size)
   <span style="font-style: italic;">"Add the list of LIST-SIZE items from recently edited files."</span>
@@ -233,9 +414,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-orgb22a24b" class="outline-2">
-<h2 id="orgb22a24b">结论</h2>
-<div class="outline-text-2" id="text-orgb22a24b">
+<div id="outline-container-org887c2fd" class="outline-2">
+<h2 id="org887c2fd">结论</h2>
+<div class="outline-text-2" id="text-org887c2fd">
 <p>
 所以，这个<a href="https://github.com/emacs-dashboard/emacs-dashboard/pull/83/">PR</a>压根没有修复Recent Files显示Agenda org files这个issue。它只在同时满足 <b>首次启动Emacs</b> 和 <b>agenda在recentf前面</b> 这两个条件时，它才会Work。
 </p>
@@ -245,9 +426,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </p>
 </div>
 
-<div id="outline-container-orgf182bc3" class="outline-3">
-<h3 id="orgf182bc3">1.修改dashboard的逻辑</h3>
-<div class="outline-text-3" id="text-orgf182bc3">
+<div id="outline-container-org7e4e730" class="outline-3">
+<h3 id="org7e4e730">1.修改dashboard的逻辑</h3>
+<div class="outline-text-3" id="text-org7e4e730">
 <p>
 在上面dashboard的代码中加两行，作用是每次完成一个item之后，都复原一次 <code>recentf-list</code> 。
 </p>
@@ -275,9 +456,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-orgd7ad1d2" class="outline-3">
-<h3 id="orgd7ad1d2">2.重新定义g按键</h3>
-<div class="outline-text-3" id="text-orgd7ad1d2">
+<div id="outline-container-org5ae6e5d" class="outline-3">
+<h3 id="org5ae6e5d">2.重新定义g按键</h3>
+<div class="outline-text-3" id="text-org5ae6e5d">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(define-key dashboard-mode-map (kbd <span style="font-style: italic;">"g"</span>) #'my-dashboard-g)
 </pre>
@@ -309,9 +490,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 这是一篇用Emacs和Org编写的博客。
 </p>
 
-<div id="outline-container-orgb39555e" class="outline-2">
-<h2 id="orgb39555e">缘起</h2>
-<div class="outline-text-2" id="text-orgb39555e">
+<div id="outline-container-org2fed6a4" class="outline-2">
+<h2 id="org2fed6a4">缘起</h2>
+<div class="outline-text-2" id="text-org2fed6a4">
 <p>
 最近突然想写博客了，其实之前也断断续续的写过一些，从一开始的CSDN到Github Pages，从pelican到hugo。
 </p>
@@ -342,9 +523,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-orgbc78009" class="outline-2">
-<h2 id="orgbc78009">org-static-blog</h2>
-<div class="outline-text-2" id="text-orgbc78009">
+<div id="outline-container-orge2b66a6" class="outline-2">
+<h2 id="orge2b66a6">org-static-blog</h2>
+<div class="outline-text-2" id="text-orge2b66a6">
 <p>
 这个博客生成工具给我的感觉就是simple and brute force。
 </p>
@@ -387,9 +568,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org3e4adac" class="outline-2">
-<h2 id="org3e4adac">结语</h2>
-<div class="outline-text-2" id="text-org3e4adac">
+<div id="outline-container-org306498d" class="outline-2">
+<h2 id="org306498d">结语</h2>
+<div class="outline-text-2" id="text-org306498d">
 <p>
 最后立个flag，讲讲之后博客上会写些什么。
 </p>
