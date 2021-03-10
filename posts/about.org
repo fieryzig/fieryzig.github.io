@@ -20,11 +20,11 @@ Email: duo0702@live.cn
 
 * Waifu
 
-#+attr_html: :width 100px
+#+attr_html: :width 200px
 [[./images/about/waifu1.jpg]]
-#+attr_html: :width 100px
+#+attr_html: :width 200px
 [[./images/about/waifu2.jpg]]
-#+attr_html: :width 100px
+#+attr_html: :width 200px
 [[./images/about/waifu3.jpg]]
 
 * 有关学习与工作的流水帐
