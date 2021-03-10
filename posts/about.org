@@ -1,0 +1,78 @@
+#+title: About Me
+#+date: <2021-03-10 20:41>
+
+名也者，相轧也。知也者，争之器也。二者凶器，非所以尽行也。
+
+* 关于我
+
+目前的兴趣：游戏开发、计算机图形学、Emacs
+
+欢迎讨论和学习
+
+Email: duo0702@live.cn
+
+* 技术之外
+
++ 喜欢厨艺
++ 喜欢《诗经》、《庄子》
++ SNH48：7年老粉丝，现在佛系看看
++ 二次元：算是个2.5次元吧
+
+* Waifu
+
+#+attr_html: :width 100px
+[[./images/about/waifu1.jpg]]
+#+attr_html: :width 100px
+[[./images/about/waifu2.jpg]]
+#+attr_html: :width 100px
+[[./images/about/waifu3.jpg]]
+
+* 有关学习与工作的流水帐
+
+** 2021
+
++ 预计6月硕士毕业
++ 预计7月入职鹅厂
+
+** 2020
+
+*** 迷语
+
+迷语是一款陌生人社交App。
+
+我主要负责了推荐系统和NLP相关业务的工作。
+
+*** 推荐系统外包
+
+参与“快点阅读”和“中青看点”两家公司的推荐系统的搭建。
+
+** 2019
+
+*** Oneflow
+
+Oneflow是国产分布式深度学习框架，我有幸实习了3-4个月，参与了Python API的开发工作。
+
+*** 论文发表
+
+Joint Prediction for Kinematic Trajectories in Vehicle-Pedestrian-Mixed Scenes (ICCV 2019)
+
+** 2018
+
+*** Everitoken
+
+在Everitoken区块链项目远程实习了5个月，负责开发Python SDK和负载测试。
+
+https://github.com/everitoken/evt/commits?author=fieryzig
+
+*** 论文发表
+
+Replay attack detection based on distortion by loudspeaker for voice authentication (Multimedia Tools and Application 2018)
+
+** 2017及之前
+
++ 2017 从武汉大学计算机学院毕业，取得学士学位。
++ 2016 年全国大学生信息安全大赛 二等奖
++ 2015 年国际大学生程序设计竞赛（ACM-ICPC）长春赛区 金奖
++ 2015 年国际大学生程序设计竞赛（ACM-ICPC）上海邀请赛 金奖
++ 2015 年国际大学生程序设计竞赛（ACM-ICPC）北京赛区 银奖
+
