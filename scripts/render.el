@@ -27,6 +27,7 @@
       "<meta name=\"author\" content=\"fieryzig\">
 <meta name=\"referrer\" content=\"no-referrer\">
 <link href=\"static/style.css\" rel=\"stylesheet\" type=\"text/css\" />
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
 ")
 (setq org-static-blog-page-preamble (concat
                                      "<div class=\"header\">

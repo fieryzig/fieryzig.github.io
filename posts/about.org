@@ -76,3 +76,16 @@ Replay attack detection based on distortion by loudspeaker for voice authenticat
 + 2015 年国际大学生程序设计竞赛（ACM-ICPC）上海邀请赛 金奖
 + 2015 年国际大学生程序设计竞赛（ACM-ICPC）北京赛区 银奖
 
+* 测试一下评论功能
+
+#+begin_export html
+<div id="vcomments"></div>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'C3hc4byJxsu4x5i5bATFh8Bk-gzGzoHsz',
+        appKey: 'W04d30CR7ANFjuPmGUVcUc9j'
+    })
+</script>
+#+end_export
+
