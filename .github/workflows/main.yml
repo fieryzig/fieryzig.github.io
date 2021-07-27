@@ -32,7 +32,11 @@ jobs:
       - name: Render HTML
         run: ./scripts/render.bat
           
-      - name: Commit & Push
-        uses: actions-js/push@master
+      - name: Commit
+        uses: EndBug/add-and-commit@v4
         with:
+          author_name: fieryzig
+          author_email: duo0702@live.cn
+          message: 'auto render HTML files'
+        env:
           github_token: ${{ secrets.GITHUB_TOKEN }}
