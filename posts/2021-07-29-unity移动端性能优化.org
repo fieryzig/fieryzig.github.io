@@ -1,0 +1,81 @@
+#+title: Unity移动端性能优化
+#+date: <2021-07-29 10:05>
+#+filetags: Unity
+
+最近读了[[https://blog.unity.com/technology/optimize-your-mobile-game-performance-tips-on-profiling-memory-and-code-architecture][Optimize your mobile game performance]]，结合自己的实践，做一些笔记。
+
+* 真机Profiling
+  Profiling所用到的主要工具是Unity自带的Profiler、Frame Debugger、Memory Debugger等。
+  由于真机环境和Editor环境是不同的，因此做性能分析，最好还是在真机上调试。
+
+  1. 在 =Build Settings= 切换到对应的平台（Android）
+  2. 开启 =Development Build= ， =Autoconnect Profiler=
+  3. 打包apk，在真机上安装运行
+     #+BEGIN_SRC bash
+       adb install xxxxx.apk
+     #+END_SRC
+
+  =Autoconnect Profiler= 选项只适用于真机和主机在同一个网段下，通过Wifi连接。
+  如果网络环境不允许，可以通过USB进行调试，需要adb做一下端口转发。
+  #+BEGIN_SRC bash
+    adb forward tcp:34999 localabstract:Unity-com.yyyyy.xxxxx
+  #+END_SRC
+  端口号34999，和具体的Unity版本相关，可以打开Unity的Profiler，点击Editor按钮，可以列出 =AndroidPlayer(ADB@127.0.0.1:?????)= ，填写这里显示的端口号。
+
+  至此，启动游戏，开启Record，就可以看到Record开始记录了，Happy Profiling！
+
+* Before Profiling
+  Profiling的目的当然是性能优化，那性能优化的目标是什么？又如何确定瓶颈呢？
+
+  + 性能优化的主要目标是 *FPS* （当然也有别的）
+    理论上，运行达到30 fps需要每帧耗时不超过33.33ms；60 fps需要每帧耗时不超过16.66ms。
+    然而在移动设备上，会有发热导致的降频情况，因此对于每帧的耗时要更小一些：30fps需要22ms/frame；60fps需要11ms/frame。
+
+  + 确定是CPU瓶颈还是GPU瓶颈
+    - CPU-Bound：如果在Profiler中看到 =Gfx.WaitForCommands= ，说明渲染线程已经就绪，在等待主线程
+    - GPU-Bound：如果在Profiler中看到 =Gfx.WaitForPresent= ，说明主线程已经就绪，等待GPU显示当前帧
+
+* UGUI
+
+  UGUI经常引发性能问题。Canvas组件生成和更新Mesh，并发起Draw Call。这个过程会很消耗性能，在使用UGUI的时候，要注意以下几点。
+
+** 拆分Canvas
+
+   如果有一个很庞大的Canvas（比如里面有上千个元素），更新其中的一个元素，会使整个Canvas进行更新，可能会产生CPU突峰。
+
+   *Tips:*
+   + UGUI支持多个Canvas。将UI元素按照更新的频率拆分。静态的元素放在一个Canvas中；更新频繁的元素，把同时更新的元素放在同一个更小的sub-canvas中
+   + 确保每个Canvas中的UI元素有相同的Z value、material和texture
+
+** 隐藏看不到的UI元素
+   将暂时看不到的UI元素disable掉，因为处于active的元素，可能会引起Draw Call。
+
+   *Tips:*
+   + 如果需要隐藏一个Canvas的可见性，不要disable GameObject，而要disable Canvas Component。这么做可以节省重建mesh和vertices的时间
+
+** 少用GraphicRaycaster和Raycast Target
+   屏幕点击等输入事件需要GraphicRaycaster组件。它会遍历屏幕上的每个输入点，检查是否是UI RectTransform。
+   *Tips:*
+   + 移除从顶层Canvas层级中默认的GraphicRaycaster，只在需要有交互的UI元素上添加GraphicRaycaster组件
+   + 在UI Text和Image中disable不需要的Raycast Target
+
+** 避免使用Layout Groups
+   Layout Groups的Update效率很低，尽量少用。如果内部的UI元素不是动态的，那么不要使用。动态内容如果确实需要使用，不要将Layout Groups(Horizontal, Vertical, Grid)嵌套使用。
+
+** 避免使用庞大的List View和Grid View
+   *Tips:*
+   + 如果需要做包含大量元素的List View或Grid View，使用对象池做UI元素的复用
+
+** Canvas渲染模式
+   *Tips:*
+   + 如果使用 =World Space= 渲染模式，要填写Event Camera
+   + 尽量使用 =Screen Space - Overlay= 模式，不需要Camera
+
+** 降低OverDraw
+   之后单独写一篇文章   
+     
+* Further
+  + 内存的GC优化
+  + 一些编程上的细节优化
+  + GPU优化
+  + 降低OverDraw的优化
