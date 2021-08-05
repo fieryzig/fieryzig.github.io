@@ -27,9 +27,9 @@
 最近读了<a href="https://blog.unity.com/technology/optimize-your-mobile-game-performance-tips-on-profiling-memory-and-code-architecture">Optimize your mobile game performance</a>，结合自己的实践，做一些笔记。
 </p>
 
-<div id="outline-container-org08f3613" class="outline-2">
-<h2 id="org08f3613">真机Profiling</h2>
-<div class="outline-text-2" id="text-org08f3613">
+<div id="outline-container-org1866bc1" class="outline-2">
+<h2 id="org1866bc1">真机Profiling</h2>
+<div class="outline-text-2" id="text-org1866bc1">
 <p>
 Profiling所用到的主要工具是Unity自带的Profiler、Frame Debugger、Memory Debugger等。
 由于真机环境和Editor环境是不同的，因此做性能分析，最好还是在真机上调试。
@@ -65,9 +65,9 @@ Profiling所用到的主要工具是Unity自带的Profiler、Frame Debugger、Me
 </div>
 </div>
 
-<div id="outline-container-orgd8d0275" class="outline-2">
-<h2 id="orgd8d0275">Before Profiling</h2>
-<div class="outline-text-2" id="text-orgd8d0275">
+<div id="outline-container-org973de8a" class="outline-2">
+<h2 id="org973de8a">Before Profiling</h2>
+<div class="outline-text-2" id="text-org973de8a">
 <p>
 Profiling的目的当然是性能优化，那性能优化的目标是什么？又如何确定瓶颈呢？
 </p>
@@ -86,17 +86,17 @@ Profiling的目的当然是性能优化，那性能优化的目标是什么？�
 </div>
 </div>
 
-<div id="outline-container-org78d1039" class="outline-2">
-<h2 id="org78d1039">UGUI</h2>
-<div class="outline-text-2" id="text-org78d1039">
+<div id="outline-container-org979e664" class="outline-2">
+<h2 id="org979e664">UGUI</h2>
+<div class="outline-text-2" id="text-org979e664">
 <p>
 UGUI经常引发性能问题。Canvas组件生成和更新Mesh，并发起Draw Call。这个过程会很消耗性能，在使用UGUI的时候，要注意以下几点。
 </p>
 </div>
 
-<div id="outline-container-org50ef8f3" class="outline-3">
-<h3 id="org50ef8f3">拆分Canvas</h3>
-<div class="outline-text-3" id="text-org50ef8f3">
+<div id="outline-container-orga5b509c" class="outline-3">
+<h3 id="orga5b509c">拆分Canvas</h3>
+<div class="outline-text-3" id="text-orga5b509c">
 <p>
 如果有一个很庞大的Canvas（比如里面有上千个元素），更新其中的一个元素，会使整个Canvas进行更新，可能会产生CPU突峰。
 </p>
@@ -111,9 +111,9 @@ UGUI经常引发性能问题。Canvas组件生成和更新Mesh，并发起Draw C
 </div>
 </div>
 
-<div id="outline-container-orgd3d9a44" class="outline-3">
-<h3 id="orgd3d9a44">隐藏看不到的UI元素</h3>
-<div class="outline-text-3" id="text-orgd3d9a44">
+<div id="outline-container-orgd9388f8" class="outline-3">
+<h3 id="orgd9388f8">隐藏看不到的UI元素</h3>
+<div class="outline-text-3" id="text-orgd9388f8">
 <p>
 将暂时看不到的UI元素disable掉，因为处于active的元素，可能会引起Draw Call。
 </p>
@@ -127,9 +127,9 @@ UGUI经常引发性能问题。Canvas组件生成和更新Mesh，并发起Draw C
 </div>
 </div>
 
-<div id="outline-container-org27273d7" class="outline-3">
-<h3 id="org27273d7">少用GraphicRaycaster和Raycast Target</h3>
-<div class="outline-text-3" id="text-org27273d7">
+<div id="outline-container-orgb9ca3db" class="outline-3">
+<h3 id="orgb9ca3db">少用GraphicRaycaster和Raycast Target</h3>
+<div class="outline-text-3" id="text-orgb9ca3db">
 <p>
 屏幕点击等输入事件需要GraphicRaycaster组件。它会遍历屏幕上的每个输入点，检查是否是UI RectTransform。
 <b>Tips:</b>
@@ -141,18 +141,18 @@ UGUI经常引发性能问题。Canvas组件生成和更新Mesh，并发起Draw C
 </div>
 </div>
 
-<div id="outline-container-orge345132" class="outline-3">
-<h3 id="orge345132">避免使用Layout Groups</h3>
-<div class="outline-text-3" id="text-orge345132">
+<div id="outline-container-org2c060ff" class="outline-3">
+<h3 id="org2c060ff">避免使用Layout Groups</h3>
+<div class="outline-text-3" id="text-org2c060ff">
 <p>
 Layout Groups的Update效率很低，尽量少用。如果内部的UI元素不是动态的，那么不要使用。动态内容如果确实需要使用，不要将Layout Groups(Horizontal, Vertical, Grid)嵌套使用。
 </p>
 </div>
 </div>
 
-<div id="outline-container-org7a96173" class="outline-3">
-<h3 id="org7a96173">避免使用庞大的List View和Grid View</h3>
-<div class="outline-text-3" id="text-org7a96173">
+<div id="outline-container-org6759e04" class="outline-3">
+<h3 id="org6759e04">避免使用庞大的List View和Grid View</h3>
+<div class="outline-text-3" id="text-org6759e04">
 <p>
 <b>Tips:</b>
 </p>
@@ -162,9 +162,9 @@ Layout Groups的Update效率很低，尽量少用。如果内部的UI元素不�
 </div>
 </div>
 
-<div id="outline-container-org71efc71" class="outline-3">
-<h3 id="org71efc71">Canvas渲染模式</h3>
-<div class="outline-text-3" id="text-org71efc71">
+<div id="outline-container-orgc23f9bb" class="outline-3">
+<h3 id="orgc23f9bb">Canvas渲染模式</h3>
+<div class="outline-text-3" id="text-orgc23f9bb">
 <p>
 <b>Tips:</b>
 </p>
@@ -175,9 +175,9 @@ Layout Groups的Update效率很低，尽量少用。如果内部的UI元素不�
 </div>
 </div>
 
-<div id="outline-container-orge0742ad" class="outline-3">
-<h3 id="orge0742ad">降低OverDraw</h3>
-<div class="outline-text-3" id="text-orge0742ad">
+<div id="outline-container-org0fe09e0" class="outline-3">
+<h3 id="org0fe09e0">降低OverDraw</h3>
+<div class="outline-text-3" id="text-org0fe09e0">
 <p>
 之后单独写一篇文章   
 </p>
@@ -185,9 +185,9 @@ Layout Groups的Update效率很低，尽量少用。如果内部的UI元素不�
 </div>
 </div>
 
-<div id="outline-container-orgf8019f0" class="outline-2">
-<h2 id="orgf8019f0">Further</h2>
-<div class="outline-text-2" id="text-orgf8019f0">
+<div id="outline-container-org02695e7" class="outline-2">
+<h2 id="org02695e7">Further</h2>
+<div class="outline-text-2" id="text-org02695e7">
 <ul class="org-ul">
 <li>内存的GC优化</li>
 <li>一些编程上的细节优化</li>
