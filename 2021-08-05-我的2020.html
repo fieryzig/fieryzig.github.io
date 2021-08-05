@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="我对2020的回忆">
+<link rel="alternate"
+      type="application/rss+xml"
+      href="https://fieryzig.github.io/rss.xml"
+      title="RSS feed for https://fieryzig.github.io">
+<title>我的2020</title>
+<meta name="author" content="fieryzig">
+<meta name="referrer" content="no-referrer">
+<link href="static/style.css" rel="stylesheet" type="text/css" />
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+</head>
+<body>
+<div id="preamble" class="status"><div class="header">
+<h1><a href="https://fieryzig.github.io" class="title">Les Frites</a></h1>
+<p class="text-muted">fieryzig's blog</p>
+<ul class="list-inline">
+<li class="list-inline-item"><a href="https://fieryzig.github.io/about.html">About</a></li>
+<li class="list-inline-item"><a href="https://fieryzig.github.io/tags.html">Tags</a></li>
+</ul>
+</div></div>
+<div id="content">
+<div class="post-date">05 Aug 2021</div><h1 class="post-title"><a href="https://fieryzig.github.io/2021-08-05-我的2020.html">我的2020</a></h1>
+<p>
+这篇文章拖了太久了，趁着封陪的时候忙里偷闲总结一下自己的2020，再不写出来估计就要忘记了。
+</p>
+
+<p>
+虽然说是2020，但是从2019年的10月起，我就赋闲在外了，开启了自己的职业生涯。
+</p>
+
+<p>
+总的来说，这一年多的时间可以分为4个阶段，分别对应了我的4段不同的工作经历。
+</p>
+
+<div id="outline-container-org97fb4c4" class="outline-2">
+<h2 id="org97fb4c4">推荐系统</h2>
+<div class="outline-text-2" id="text-org97fb4c4">
+<p>
+我从2019年10月开始，接触了推荐系统的开发工作。感谢我的朋友Alice和Gatevin给予我的指导和帮助。
+具体而言，我的这段经历又可以分成两段：
+</p>
+</div>
+<div id="outline-container-org2f0e034" class="outline-3">
+<h3 id="org2f0e034">快点阅读</h3>
+<div class="outline-text-3" id="text-org2f0e034">
+<p>
+现在回想起这里，最先出现在我脑中的是这家公司的工作环境，我喜欢那里极简风格的装修。
+</p>
+
+<p>
+在这里我第一次接触到了推荐系统。推荐系统分为离线训练和在线服务两个部分。我是先从离线训练开始入手的。从一开始向当前的模型训练中加入新特征，到自己从零开始搭建新的模型，我对离线训练部分逐渐了解。在这段工作中，我熟悉了基于PySpark的特征开发，基于Azkaban的任务调度，整个推荐系统宏观的架构，以及推荐算法的优化目标。
+</p>
+
+<p>
+在这里学习与工作了两个月，由于公司业务发展的需要，我被指派去了第二家公司，为他们提供推荐算法的服务。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org990f5cf" class="outline-3">
+<h3 id="org990f5cf">中青看点</h3>
+<div class="outline-text-3" id="text-org990f5cf">
+<p>
+相比于快点阅读，中青看点的日活人数更多，面向的用户群体年纪更大（主要是中老年人），业务更加复杂（包括文章、视频、短视频），开发氛围也更加压抑（一家较为Push的公司）。
+</p>
+
+<p>
+刚到了这里，就遇到了第一个困难。由于一些历史原因，这家公司的主体数据业务都是在阿里云提供的Dataworks服务上。并且在我来之前，阿里云的技术团队已经在这里搭建了一套基于Dataworks和PAI平台的推荐系统。因此，我们之前积累下来的基于PySpark的推荐系统框架是无法快速落地了。无法部署我们自己的系统，所以我需要在Dataworks平台上重新实现我们的推荐算法。首先做对文章的推荐，根据当前可以提供的埋点数据和业务的特点提出了一些特征，接着快速学习上手了Dataworks，在Dataworks平台上，用它仅支持的SQL语句实现了数据处理和特征提取，接着在PAI平台上搭建PS-SMART（其实就是GBDT，阿里云自己起了个名字），反复实验调参。最终一个远远优于原推荐系统的结果，赢得了同事们的信任。
+</p>
+
+<p>
+对文章的推荐算法部署之后，根据中青看点业务的需求，又先后做了对视频的推荐和对短视频的推荐。这时，我们团队的基于Tensorflow的分布式FM推荐算法框架Babylon开发完毕。而我也由此迎来了第二个困难：在中青看点部署Babylon。
+</p>
+
+<p>
+这个困难之所以成为一个困难，还是因为阿里云。因为这是一篇记录生活的文章，就不赘述了，这个复杂的解决方案在下一篇文章中再介绍吧。总之，最后成功地部署了Babylon对文章进行推荐，并且推荐的效果优于自己先前搭建的推荐系统，因此逐步将Babylon推广到视频和短视频的推荐中。在这里，我也带了我的第一个实习生，他主要完成了短视频推荐的一些工作。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfe2f639" class="outline-2">
+<h2 id="orgfe2f639">迷语</h2>
+<div class="outline-text-2" id="text-orgfe2f639">
+<p>
+当我在中青看点工作期间，我的朋友们也在紧锣密鼓地开展创业的事情。这里还是要感谢Alice，给了我人生中第一次参与创业和见投资人的机会。大约在2020年4月份，我逐渐交接中青看点的工作，回到迷语。其实这里用“回到”并不准确，因为这是我第一次到迷语。
+</p>
+
+<p>
+在迷语，我的工作主要还是围绕推荐系统展开的，迷语的推荐主要是推荐用户、推荐动态、推荐题目、推荐折纸等。首先是将之前的基于PySpark的推荐系统和Babylon推荐系统部署在迷语，独立开发了一个推荐系统的在线服务，我给它起了个名字叫做Arno，借用了刺客信条大革命的男主名字。
+</p>
+
+<p>
+接下来，在迷语的工作尝试了基于图的推荐算法，包括node2vec等。node2vec的官方repo给出了一个spark的版本，但是是用Scala编写的，并且版本上有一些坑。最后修改了pom文件，成功完成了。具体改了哪里，我已经忘了。
+</p>
+
+<p>
+以上就主要是推荐算法的一些工作，之后的工作我又接触了一个新领域——NLP。其实也不算是新领域，之前在情感计算的课程上也做过基于Seq2Seq（LSTM）的情感语言生成，不过在BERT火起来之后，我就没有再接触过NLP了。
+</p>
+
+<p>
+在迷语的NLP工作，从模型上分的话是BERT和GPT2，分别对应了最后落地的两个产品设计：同频动态和AI回复。此外也对聊天内容和动态做了LDA用于推荐的特征中。
+</p>
+
+<p>
+BERT和GPT2都是基于HuggingFace去离线训练的。BERT的在线服务用了<a href="https://github.com/hanxiao/bert-as-service">bert-as-service</a>，GPT2的在线服务是自己基于<a href="https://github.com/pytorch/serve">TorchServe</a>搭建的。在完成NLP业务的工作中，我得到了很多来自“彩云科技”的前辈（肖博士）的指点和帮助，感谢！
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb60929a" class="outline-2">
+<h2 id="orgb60929a">Live2D + Unity = VTuber?</h2>
+<div class="outline-text-2" id="text-orgb60929a">
+<p>
+2020年7月，我离开了北京，去往广州，在广州生活工作了3个月，远程为迷语工作。前两个月还是以NLP的算法和业务工作为主，面试了一些人，也带了第二个实习生。在带实习生的过程中，暴露了我自己的一些问题，可能我不太适合带人吧。
+8月末9月初，Alice萌生了要做虚拟偶像直播的想法，因为我有一些Unity的经验，我便去尝试做一个Demo出来。
+</p>
+
+<p>
+之前我用Unity做过一个体感吃豆人（Pacman）的游戏，这个游戏利用CV算法进行面部捕捉，活动自己的头来移动游戏中的角色。这次要做的Demo从算法上讲，和这个游戏是大同小异的，利用CV算法的面部识别，控制Live2D角色头部、眼睛和嘴巴的动作。
+</p>
+
+<p>
+二者不同的地方在于，后者是一个直播App，需要处理网络同步的问题。在解决网络同步问题的过程中，学习了游戏同步的一些知识，包括帧同步、状态同步、KCP协议等。最后的同步效果，在内网环境下还是可以的，在外网环境没有满足自己的期望。这里对于追求完美而产生的挫败感给我种下了想去学习的种子。
+</p>
+
+<p>
+最后的Demo，我认为还是可以的，也接入了声网Agora，代码之后可以整理一下放到Github上，希望可以对别人有一些帮助。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4987057" class="outline-2">
+<h2 id="org4987057">未能完成的学习</h2>
+<div class="outline-text-2" id="text-org4987057">
+<p>
+2020年10月，我回到北京，想完成之前休学的学业。在我离开广州之前，给自己列了一个长长的list，上面写着我想要去研究和学习的东西。我想回到北京之后，好好地学习一年，2022年6月毕业。
+</p>
+
+<p>
+不过，计划没有变化快，2021年6月我就可以毕业了。这么匆忙的时间里，我要完成找工作和毕业论文的相关事情，还是有着很大的压力。
+</p>
+
+<p>
+不管过程是多么的痛苦，好在最后找到了工作，也完成了毕业。
+</p>
+
+<p>
+但是那个长长的list却没能完成，希望它有朝一日还能提上日程吧。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf1ae287" class="outline-2">
+<h2 id="orgf1ae287">后记</h2>
+<div class="outline-text-2" id="text-orgf1ae287">
+<p>
+后记里我想谈谈2020年生活的事情。2020年是疫情爆发的元年。春节放假在家的时候，疫情突然就严重了起来，学校通知我们在老家呆着，不要返京，更不要返校。而我当时还在中青看点做推荐服务，算是半只脚在学校内，半只脚在社会中，我没办法不回京。所以，我在2月10日就瞒着学校返回了北京。由于封校和瞒着学校，我也只能自己在外面租房住，第一次自己一个人生活。疫情期间饭店都停业了，自己在家做饭对我来说是一项不小的挑战。从一开始煮一碗面条需要和我妈视频寻求指导，到自己可以炒一些黑暗料理，我逐渐地喜欢上了做饭，将做饭变成了自己的爱好之一。
+</p>
+</div>
+</div>
+<div class="taglist"><a href="https://fieryzig.github.io/tags.html">Tags</a>: <a href="https://fieryzig.github.io/tag-life.html">life</a> </div></div>
+<div id="postamble" class="status"></div>
+</body>
+</html>
