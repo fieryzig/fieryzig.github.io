@@ -1,0 +1,51 @@
+#+title: Unity中的协程
+#+date: <2021-07-27 14:11>
+#+filetags: Unity
+
+最近学习了协程在Unity中的应用，这篇文章对学习进行一下总结。本文分为五个部分，依次为：
+
++ 协程简介
++ C#和Unity的协程
++ UniTask
++ Case Study
++ 结论
+
+* 简单介绍一下协程
+在学习Unity中的协程之前，先学习一下协程的概念。协程是什么(What)，在什么场景下使用(When)，协程是怎么做的(How)？
+
+** What
+   
+** When
+
+** How
+
+* C#和Unity中的协程
+
+** =Unity Coroutine=
+
+** C#中的协程
+
+** =Unity Coroutine= VS =C# Task=
+
+* UniTask
+
+** Features
+
+** 使用中需要注意的地方
+
+* Case Studty
+
+** Timeout Cancel
+
+** 计时器Demo
+
+* 结论
+
+* References
+  + https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html
+  + http://www.stevevermeulen.com/index.php/2017/09/using-async-await-in-unity3d-2017/
+  + https://docs.microsoft.com/en-us/dotnet/csharp/async
+  + https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
+  + https://neuecc.medium.com/unitask-v2-zero-allocation-async-await-for-unity-with-asynchronous-linq-1aa9c96aa7dd
+  + https://github.com/Cysharp/UniTask
+  + http://changxianjie.gitee.io/unitypartner/2019/09/30/UniTask%E5%9C%A8Unity%E4%B8%AD%E4%BD%BF%E7%94%A8/
