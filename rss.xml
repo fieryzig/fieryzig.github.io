@@ -4,7 +4,335 @@
 <title><![CDATA[Les Frites]]></title>
 <description><![CDATA[Les Frites]]></description>
 <link>https://fieryzig.github.io</link>
-<lastBuildDate>Thu, 11 Mar 2021 11:44:35 +0000</lastBuildDate>
+<lastBuildDate>Thu, 05 Aug 2021 18:34:02 +0000</lastBuildDate>
+<item>
+  <title><![CDATA[我的2020]]></title>
+  <description><![CDATA[
+<p>
+这篇文章拖了太久了，趁着封陪的时候忙里偷闲总结一下自己的2020，再不写出来估计就要忘记了。
+</p>
+
+<p>
+虽然说是2020，但是从2019年的10月起，我就赋闲在外了，开启了自己的职业生涯。
+</p>
+
+<p>
+总的来说，这一年多的时间可以分为4个阶段，分别对应了我的4段不同的工作经历。
+</p>
+
+<div id="outline-container-orgc3167ca" class="outline-2">
+<h2 id="orgc3167ca">推荐系统</h2>
+<div class="outline-text-2" id="text-orgc3167ca">
+<p>
+我从2019年10月开始，接触了推荐系统的开发工作。感谢我的朋友Alice和Gatevin给予我的指导和帮助。
+具体而言，我的这段经历又可以分成两段：
+</p>
+</div>
+<div id="outline-container-org97c617e" class="outline-3">
+<h3 id="org97c617e">快点阅读</h3>
+<div class="outline-text-3" id="text-org97c617e">
+<p>
+现在回想起这里，最先出现在我脑中的是这家公司的工作环境，我喜欢那里极简风格的装修。
+</p>
+
+<p>
+在这里我第一次接触到了推荐系统。推荐系统分为离线训练和在线服务两个部分。我是先从离线训练开始入手的。从一开始向当前的模型训练中加入新特征，到自己从零开始搭建新的模型，我对离线训练部分逐渐了解。在这段工作中，我熟悉了基于PySpark的特征开发，基于Azkaban的任务调度，整个推荐系统宏观的架构，以及推荐算法的优化目标。
+</p>
+
+<p>
+在这里学习与工作了两个月，由于公司业务发展的需要，我被指派去了第二家公司，为他们提供推荐算法的服务。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org826a8c4" class="outline-3">
+<h3 id="org826a8c4">中青看点</h3>
+<div class="outline-text-3" id="text-org826a8c4">
+<p>
+相比于快点阅读，中青看点的日活人数更多，面向的用户群体年纪更大（主要是中老年人），业务更加复杂（包括文章、视频、短视频），开发氛围也更加压抑（一家较为Push的公司）。
+</p>
+
+<p>
+刚到了这里，就遇到了第一个困难。由于一些历史原因，这家公司的主体数据业务都是在阿里云提供的Dataworks服务上。并且在我来之前，阿里云的技术团队已经在这里搭建了一套基于Dataworks和PAI平台的推荐系统。因此，我们之前积累下来的基于PySpark的推荐系统框架是无法快速落地了。无法部署我们自己的系统，所以我需要在Dataworks平台上重新实现我们的推荐算法。首先做对文章的推荐，根据当前可以提供的埋点数据和业务的特点提出了一些特征，接着快速学习上手了Dataworks，在Dataworks平台上，用它仅支持的SQL语句实现了数据处理和特征提取，接着在PAI平台上搭建PS-SMART（其实就是GBDT，阿里云自己起了个名字），反复实验调参。最终一个远远优于原推荐系统的结果，赢得了同事们的信任。
+</p>
+
+<p>
+对文章的推荐算法部署之后，根据中青看点业务的需求，又先后做了对视频的推荐和对短视频的推荐。这时，我们团队的基于Tensorflow的分布式FM推荐算法框架Babylon开发完毕。而我也由此迎来了第二个困难：在中青看点部署Babylon。
+</p>
+
+<p>
+这个困难之所以成为一个困难，还是因为阿里云。因为这是一篇记录生活的文章，就不赘述了，这个复杂的解决方案在下一篇文章中再介绍吧。总之，最后成功地部署了Babylon对文章进行推荐，并且推荐的效果优于自己先前搭建的推荐系统，因此逐步将Babylon推广到视频和短视频的推荐中。在这里，我也带了我的第一个实习生，他主要完成了短视频推荐的一些工作。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcd56442" class="outline-2">
+<h2 id="orgcd56442">迷语</h2>
+<div class="outline-text-2" id="text-orgcd56442">
+<p>
+当我在中青看点工作期间，我的朋友们也在紧锣密鼓地开展创业的事情。这里还是要感谢Alice，给了我人生中第一次参与创业和见投资人的机会。大约在2020年4月份，我逐渐交接中青看点的工作，回到迷语。其实这里用“回到”并不准确，因为这是我第一次到迷语。
+</p>
+
+<p>
+在迷语，我的工作主要还是围绕推荐系统展开的，迷语的推荐主要是推荐用户、推荐动态、推荐题目、推荐折纸等。首先是将之前的基于PySpark的推荐系统和Babylon推荐系统部署在迷语，独立开发了一个推荐系统的在线服务，我给它起了个名字叫做Arno，借用了刺客信条大革命的男主名字。
+</p>
+
+<p>
+接下来，在迷语的工作尝试了基于图的推荐算法，包括node2vec等。node2vec的官方repo给出了一个spark的版本，但是是用Scala编写的，并且版本上有一些坑。最后修改了pom文件，成功完成了。具体改了哪里，我已经忘了。
+</p>
+
+<p>
+以上就主要是推荐算法的一些工作，之后的工作我又接触了一个新领域——NLP。其实也不算是新领域，之前在情感计算的课程上也做过基于Seq2Seq（LSTM）的情感语言生成，不过在BERT火起来之后，我就没有再接触过NLP了。
+</p>
+
+<p>
+在迷语的NLP工作，从模型上分的话是BERT和GPT2，分别对应了最后落地的两个产品设计：同频动态和AI回复。此外也对聊天内容和动态做了LDA用于推荐的特征中。
+</p>
+
+<p>
+BERT和GPT2都是基于HuggingFace去离线训练的。BERT的在线服务用了<a href="https://github.com/hanxiao/bert-as-service">bert-as-service</a>，GPT2的在线服务是自己基于<a href="https://github.com/pytorch/serve">TorchServe</a>搭建的。在完成NLP业务的工作中，我得到了很多来自“彩云科技”的前辈（肖博士）的指点和帮助，感谢！
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8c29a7f" class="outline-2">
+<h2 id="org8c29a7f">Live2D + Unity = VTuber?</h2>
+<div class="outline-text-2" id="text-org8c29a7f">
+<p>
+2020年7月，我离开了北京，去往广州，在广州生活工作了3个月，远程为迷语工作。前两个月还是以NLP的算法和业务工作为主，面试了一些人，也带了第二个实习生。在带实习生的过程中，暴露了我自己的一些问题，可能我不太适合带人吧。
+8月末9月初，Alice萌生了要做虚拟偶像直播的想法，因为我有一些Unity的经验，我便去尝试做一个Demo出来。
+</p>
+
+<p>
+之前我用Unity做过一个体感吃豆人（Pacman）的游戏，这个游戏利用CV算法进行面部捕捉，活动自己的头来移动游戏中的角色。这次要做的Demo从算法上讲，和这个游戏是大同小异的，利用CV算法的面部识别，控制Live2D角色头部、眼睛和嘴巴的动作。
+</p>
+
+<p>
+二者不同的地方在于，后者是一个直播App，需要处理网络同步的问题。在解决网络同步问题的过程中，学习了游戏同步的一些知识，包括帧同步、状态同步、KCP协议等。最后的同步效果，在内网环境下还是可以的，在外网环境没有满足自己的期望。这里对于追求完美而产生的挫败感给我种下了想去学习的种子。
+</p>
+
+<p>
+最后的Demo，我认为还是可以的，也接入了声网Agora，代码之后可以整理一下放到Github上，希望可以对别人有一些帮助。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8d6050f" class="outline-2">
+<h2 id="org8d6050f">未能完成的学习</h2>
+<div class="outline-text-2" id="text-org8d6050f">
+<p>
+2020年10月，我回到北京，想完成之前休学的学业。在我离开广州之前，给自己列了一个长长的list，上面写着我想要去研究和学习的东西。我想回到北京之后，好好地学习一年，2022年6月毕业。
+</p>
+
+<p>
+不过，计划没有变化快，2021年6月我就可以毕业了。这么匆忙的时间里，我要完成找工作和毕业论文的相关事情，还是有着很大的压力。
+</p>
+
+<p>
+不管过程是多么的痛苦，好在最后找到了工作，也完成了毕业。
+</p>
+
+<p>
+但是那个长长的list却没能完成，希望它有朝一日还能提上日程吧。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6cf4a2a" class="outline-2">
+<h2 id="org6cf4a2a">后记</h2>
+<div class="outline-text-2" id="text-org6cf4a2a">
+<p>
+后记里我想谈谈2020年生活的事情。2020年是疫情爆发的元年。春节放假在家的时候，疫情突然就严重了起来，学校通知我们在老家呆着，不要返京，更不要返校。而我当时还在中青看点做推荐服务，算是半只脚在学校内，半只脚在社会中，我没办法不回京。所以，我在2月10日就瞒着学校返回了北京。由于封校和瞒着学校，我也只能自己在外面租房住，第一次自己一个人生活。疫情期间饭店都停业了，自己在家做饭对我来说是一项不小的挑战。从一开始煮一碗面条需要和我妈视频寻求指导，到自己可以炒一些黑暗料理，我逐渐地喜欢上了做饭，将做饭变成了自己的爱好之一。
+</p>
+</div>
+</div>
+<div class="taglist"><a href="https://fieryzig.github.io/tags.html">Tags</a>: <a href="https://fieryzig.github.io/tag-life.html">life</a> </div>]]></description>
+  <category><![CDATA[life]]></category>
+  <link>https://fieryzig.github.io/2021-08-05-我的2020.html</link>
+  <pubDate>Thu, 05 Aug 2021 01:33:00 +0000</pubDate>
+</item>
+<item>
+  <title><![CDATA[Unity移动端性能优化]]></title>
+  <description><![CDATA[
+<p>
+最近读了<a href="https://blog.unity.com/technology/optimize-your-mobile-game-performance-tips-on-profiling-memory-and-code-architecture">Optimize your mobile game performance</a>，结合自己的实践，做一些笔记。
+</p>
+
+<div id="outline-container-org1866bc1" class="outline-2">
+<h2 id="org1866bc1">真机Profiling</h2>
+<div class="outline-text-2" id="text-org1866bc1">
+<p>
+Profiling所用到的主要工具是Unity自带的Profiler、Frame Debugger、Memory Debugger等。
+由于真机环境和Editor环境是不同的，因此做性能分析，最好还是在真机上调试。
+</p>
+
+<ol class="org-ol">
+<li>在 <code>Build Settings</code> 切换到对应的平台（Android）</li>
+<li>开启 <code>Development Build</code> ， <code>Autoconnect Profiler</code></li>
+<li><p>
+打包apk，在真机上安装运行
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">adb install xxxxx.apk
+</pre>
+</div></li>
+</ol>
+
+<p>
+<code>Autoconnect Profiler</code> 选项只适用于真机和主机在同一个网段下，通过Wifi连接。
+如果网络环境不允许，可以通过USB进行调试，需要adb做一下端口转发。
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">adb forward tcp:34999 localabstract:Unity-com.yyyyy.xxxxx
+</pre>
+</div>
+<p>
+端口号34999，和具体的Unity版本相关，可以打开Unity的Profiler，点击Editor按钮，可以列出 <code>AndroidPlayer(ADB@127.0.0.1:?????)</code> ，填写这里显示的端口号。
+</p>
+
+<p>
+至此，启动游戏，开启Record，就可以看到Record开始记录了，Happy Profiling！
+</p>
+</div>
+</div>
+
+<div id="outline-container-org973de8a" class="outline-2">
+<h2 id="org973de8a">Before Profiling</h2>
+<div class="outline-text-2" id="text-org973de8a">
+<p>
+Profiling的目的当然是性能优化，那性能优化的目标是什么？又如何确定瓶颈呢？
+</p>
+
+<ul class="org-ul">
+<li>性能优化的主要目标是 <b>FPS</b> （当然也有别的）
+理论上，运行达到30 fps需要每帧耗时不超过33.33ms；60 fps需要每帧耗时不超过16.66ms。
+然而在移动设备上，会有发热导致的降频情况，因此对于每帧的耗时要更小一些：30fps需要22ms/frame；60fps需要11ms/frame。</li>
+
+<li>确定是CPU瓶颈还是GPU瓶颈
+<ul class="org-ul">
+<li>CPU-Bound：如果在Profiler中看到 <code>Gfx.WaitForCommands</code> ，说明渲染线程已经就绪，在等待主线程</li>
+<li>GPU-Bound：如果在Profiler中看到 <code>Gfx.WaitForPresent</code> ，说明主线程已经就绪，等待GPU显示当前帧</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org979e664" class="outline-2">
+<h2 id="org979e664">UGUI</h2>
+<div class="outline-text-2" id="text-org979e664">
+<p>
+UGUI经常引发性能问题。Canvas组件生成和更新Mesh，并发起Draw Call。这个过程会很消耗性能，在使用UGUI的时候，要注意以下几点。
+</p>
+</div>
+
+<div id="outline-container-orga5b509c" class="outline-3">
+<h3 id="orga5b509c">拆分Canvas</h3>
+<div class="outline-text-3" id="text-orga5b509c">
+<p>
+如果有一个很庞大的Canvas（比如里面有上千个元素），更新其中的一个元素，会使整个Canvas进行更新，可能会产生CPU突峰。
+</p>
+
+<p>
+<b>Tips:</b>
+</p>
+<ul class="org-ul">
+<li>UGUI支持多个Canvas。将UI元素按照更新的频率拆分。静态的元素放在一个Canvas中；更新频繁的元素，把同时更新的元素放在同一个更小的sub-canvas中</li>
+<li>确保每个Canvas中的UI元素有相同的Z value、material和texture</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd9388f8" class="outline-3">
+<h3 id="orgd9388f8">隐藏看不到的UI元素</h3>
+<div class="outline-text-3" id="text-orgd9388f8">
+<p>
+将暂时看不到的UI元素disable掉，因为处于active的元素，可能会引起Draw Call。
+</p>
+
+<p>
+<b>Tips:</b>
+</p>
+<ul class="org-ul">
+<li>如果需要隐藏一个Canvas的可见性，不要disable GameObject，而要disable Canvas Component。这么做可以节省重建mesh和vertices的时间</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb9ca3db" class="outline-3">
+<h3 id="orgb9ca3db">少用GraphicRaycaster和Raycast Target</h3>
+<div class="outline-text-3" id="text-orgb9ca3db">
+<p>
+屏幕点击等输入事件需要GraphicRaycaster组件。它会遍历屏幕上的每个输入点，检查是否是UI RectTransform。
+<b>Tips:</b>
+</p>
+<ul class="org-ul">
+<li>移除从顶层Canvas层级中默认的GraphicRaycaster，只在需要有交互的UI元素上添加GraphicRaycaster组件</li>
+<li>在UI Text和Image中disable不需要的Raycast Target</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org2c060ff" class="outline-3">
+<h3 id="org2c060ff">避免使用Layout Groups</h3>
+<div class="outline-text-3" id="text-org2c060ff">
+<p>
+Layout Groups的Update效率很低，尽量少用。如果内部的UI元素不是动态的，那么不要使用。动态内容如果确实需要使用，不要将Layout Groups(Horizontal, Vertical, Grid)嵌套使用。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6759e04" class="outline-3">
+<h3 id="org6759e04">避免使用庞大的List View和Grid View</h3>
+<div class="outline-text-3" id="text-org6759e04">
+<p>
+<b>Tips:</b>
+</p>
+<ul class="org-ul">
+<li>如果需要做包含大量元素的List View或Grid View，使用对象池做UI元素的复用</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgc23f9bb" class="outline-3">
+<h3 id="orgc23f9bb">Canvas渲染模式</h3>
+<div class="outline-text-3" id="text-orgc23f9bb">
+<p>
+<b>Tips:</b>
+</p>
+<ul class="org-ul">
+<li>如果使用 <code>World Space</code> 渲染模式，要填写Event Camera</li>
+<li>尽量使用 <code>Screen Space - Overlay</code> 模式，不需要Camera</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0fe09e0" class="outline-3">
+<h3 id="org0fe09e0">降低OverDraw</h3>
+<div class="outline-text-3" id="text-org0fe09e0">
+<p>
+之后单独写一篇文章   
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org02695e7" class="outline-2">
+<h2 id="org02695e7">Further</h2>
+<div class="outline-text-2" id="text-org02695e7">
+<ul class="org-ul">
+<li>内存的GC优化</li>
+<li>一些编程上的细节优化</li>
+<li>GPU优化</li>
+<li>降低OverDraw的优化</li>
+</ul>
+</div>
+</div>
+<div class="taglist"><a href="https://fieryzig.github.io/tags.html">Tags</a>: <a href="https://fieryzig.github.io/tag-unity.html">Unity</a> </div>]]></description>
+  <category><![CDATA[Unity]]></category>
+  <link>https://fieryzig.github.io/2021-07-29-unity移动端性能优化.html</link>
+  <pubDate>Thu, 29 Jul 2021 10:05:00 +0000</pubDate>
+</item>
 <item>
   <title><![CDATA[About Me]]></title>
   <description><![CDATA[
@@ -12,9 +340,9 @@
 名也者，相轧也。知也者，争之器也。二者凶器，非所以尽行也。
 </p>
 
-<div id="outline-container-org58cb3a9" class="outline-2">
-<h2 id="org58cb3a9">关于我</h2>
-<div class="outline-text-2" id="text-org58cb3a9">
+<div id="outline-container-orgceb2250" class="outline-2">
+<h2 id="orgceb2250">关于我</h2>
+<div class="outline-text-2" id="text-orgceb2250">
 <p>
 目前的兴趣：游戏开发、计算机图形学、Emacs
 </p>
@@ -29,9 +357,9 @@ Email: duo0702@live.cn
 </div>
 </div>
 
-<div id="outline-container-org8de0101" class="outline-2">
-<h2 id="org8de0101">技术之外</h2>
-<div class="outline-text-2" id="text-org8de0101">
+<div id="outline-container-orgc66e593" class="outline-2">
+<h2 id="orgc66e593">技术之外</h2>
+<div class="outline-text-2" id="text-orgc66e593">
 <ul class="org-ul">
 <li>喜欢厨艺</li>
 <li>喜欢《诗经》、《庄子》</li>
@@ -41,9 +369,9 @@ Email: duo0702@live.cn
 </div>
 </div>
 
-<div id="outline-container-orgf11b1a0" class="outline-2">
-<h2 id="orgf11b1a0">Waifu</h2>
-<div class="outline-text-2" id="text-orgf11b1a0">
+<div id="outline-container-orge7635a5" class="outline-2">
+<h2 id="orge7635a5">Waifu</h2>
+<div class="outline-text-2" id="text-orge7635a5">
 
 <figure>
 <img src="./images/about/waifu1.jpg" alt="waifu1.jpg" width="200px">
@@ -62,13 +390,13 @@ Email: duo0702@live.cn
 </div>
 </div>
 
-<div id="outline-container-org1275d1c" class="outline-2">
-<h2 id="org1275d1c">有关学习与工作的流水帐</h2>
-<div class="outline-text-2" id="text-org1275d1c">
+<div id="outline-container-org1df0225" class="outline-2">
+<h2 id="org1df0225">有关学习与工作的流水帐</h2>
+<div class="outline-text-2" id="text-org1df0225">
 </div>
-<div id="outline-container-orgf492f90" class="outline-3">
-<h3 id="orgf492f90">2021</h3>
-<div class="outline-text-3" id="text-orgf492f90">
+<div id="outline-container-orgb4c93ac" class="outline-3">
+<h3 id="orgb4c93ac">2021</h3>
+<div class="outline-text-3" id="text-orgb4c93ac">
 <ul class="org-ul">
 <li>预计6月硕士毕业</li>
 <li>预计7月入职鹅厂</li>
@@ -76,13 +404,13 @@ Email: duo0702@live.cn
 </div>
 </div>
 
-<div id="outline-container-orgbd8de4b" class="outline-3">
-<h3 id="orgbd8de4b">2020</h3>
-<div class="outline-text-3" id="text-orgbd8de4b">
+<div id="outline-container-org706df76" class="outline-3">
+<h3 id="org706df76">2020</h3>
+<div class="outline-text-3" id="text-org706df76">
 </div>
-<div id="outline-container-org0277efa" class="outline-4">
-<h4 id="org0277efa">迷语</h4>
-<div class="outline-text-4" id="text-org0277efa">
+<div id="outline-container-org80f3bbf" class="outline-4">
+<h4 id="org80f3bbf">迷语</h4>
+<div class="outline-text-4" id="text-org80f3bbf">
 <p>
 迷语是一款陌生人社交App。
 </p>
@@ -93,9 +421,9 @@ Email: duo0702@live.cn
 </div>
 </div>
 
-<div id="outline-container-org4d8606a" class="outline-4">
-<h4 id="org4d8606a">推荐系统外包</h4>
-<div class="outline-text-4" id="text-org4d8606a">
+<div id="outline-container-orgc002fcc" class="outline-4">
+<h4 id="orgc002fcc">推荐系统外包</h4>
+<div class="outline-text-4" id="text-orgc002fcc">
 <p>
 参与“快点阅读”和“中青看点”两家公司的推荐系统的搭建。
 </p>
@@ -103,22 +431,22 @@ Email: duo0702@live.cn
 </div>
 </div>
 
-<div id="outline-container-org2954e0e" class="outline-3">
-<h3 id="org2954e0e">2019</h3>
-<div class="outline-text-3" id="text-org2954e0e">
+<div id="outline-container-orgf422b13" class="outline-3">
+<h3 id="orgf422b13">2019</h3>
+<div class="outline-text-3" id="text-orgf422b13">
 </div>
-<div id="outline-container-org1eb77c1" class="outline-4">
-<h4 id="org1eb77c1">Oneflow</h4>
-<div class="outline-text-4" id="text-org1eb77c1">
+<div id="outline-container-org2b49309" class="outline-4">
+<h4 id="org2b49309">Oneflow</h4>
+<div class="outline-text-4" id="text-org2b49309">
 <p>
 Oneflow是国产分布式深度学习框架，我有幸实习了3-4个月，参与了Python API的开发工作。
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgf88137c" class="outline-4">
-<h4 id="orgf88137c">论文发表</h4>
-<div class="outline-text-4" id="text-orgf88137c">
+<div id="outline-container-orge18a46f" class="outline-4">
+<h4 id="orge18a46f">论文发表</h4>
+<div class="outline-text-4" id="text-orge18a46f">
 <p>
 Joint Prediction for Kinematic Trajectories in Vehicle-Pedestrian-Mixed Scenes (ICCV 2019)
 </p>
@@ -126,13 +454,13 @@ Joint Prediction for Kinematic Trajectories in Vehicle-Pedestrian-Mixed Scenes (
 </div>
 </div>
 
-<div id="outline-container-org7790d58" class="outline-3">
-<h3 id="org7790d58">2018</h3>
-<div class="outline-text-3" id="text-org7790d58">
+<div id="outline-container-org2fb7056" class="outline-3">
+<h3 id="org2fb7056">2018</h3>
+<div class="outline-text-3" id="text-org2fb7056">
 </div>
-<div id="outline-container-orgd12ee0d" class="outline-4">
-<h4 id="orgd12ee0d">Everitoken</h4>
-<div class="outline-text-4" id="text-orgd12ee0d">
+<div id="outline-container-orgaea6587" class="outline-4">
+<h4 id="orgaea6587">Everitoken</h4>
+<div class="outline-text-4" id="text-orgaea6587">
 <p>
 在Everitoken区块链项目远程实习了5个月，负责开发Python SDK和负载测试。
 </p>
@@ -143,9 +471,9 @@ Joint Prediction for Kinematic Trajectories in Vehicle-Pedestrian-Mixed Scenes (
 </div>
 </div>
 
-<div id="outline-container-org7f6168e" class="outline-4">
-<h4 id="org7f6168e">论文发表</h4>
-<div class="outline-text-4" id="text-org7f6168e">
+<div id="outline-container-org20b4b01" class="outline-4">
+<h4 id="org20b4b01">论文发表</h4>
+<div class="outline-text-4" id="text-org20b4b01">
 <p>
 Replay attack detection based on distortion by loudspeaker for voice authentication (Multimedia Tools and Application 2018)
 </p>
@@ -153,9 +481,9 @@ Replay attack detection based on distortion by loudspeaker for voice authenticat
 </div>
 </div>
 
-<div id="outline-container-org0d114b2" class="outline-3">
-<h3 id="org0d114b2">2017及之前</h3>
-<div class="outline-text-3" id="text-org0d114b2">
+<div id="outline-container-org5855882" class="outline-3">
+<h3 id="org5855882">2017及之前</h3>
+<div class="outline-text-3" id="text-org5855882">
 <ul class="org-ul">
 <li>2017 从武汉大学计算机学院毕业，取得学士学位。</li>
 <li>2016 年全国大学生信息安全大赛 二等奖</li>
@@ -167,9 +495,9 @@ Replay attack detection based on distortion by loudspeaker for voice authenticat
 </div>
 </div>
 
-<div id="outline-container-org11c602f" class="outline-2">
-<h2 id="org11c602f">测试一下评论功能</h2>
-<div class="outline-text-2" id="text-org11c602f">
+<div id="outline-container-org306ce45" class="outline-2">
+<h2 id="org306ce45">测试一下评论功能</h2>
+<div class="outline-text-2" id="text-org306ce45">
 <div id="vcomments"></div>
 <script>
     new Valine({
@@ -195,9 +523,9 @@ Replay attack detection based on distortion by loudspeaker for voice authenticat
 (●'◡'●)
 </p>
 
-<div id="outline-container-org9b9febc" class="outline-2">
-<h2 id="org9b9febc">缘起</h2>
-<div class="outline-text-2" id="text-org9b9febc">
+<div id="outline-container-orgd16bb19" class="outline-2">
+<h2 id="orgd16bb19">缘起</h2>
+<div class="outline-text-2" id="text-orgd16bb19">
 <p>
 最初用静态博客的时候，觉得每次写好了markdown，还要生成一下HTML十分的麻烦。后来Github官推了Jekyll，并且有了Actions的功能，算是解决了这个通点吧。
 </p>
@@ -208,17 +536,17 @@ Replay attack detection based on distortion by loudspeaker for voice authenticat
 </div>
 </div>
 
-<div id="outline-container-org75a9eb7" class="outline-2">
-<h2 id="org75a9eb7">实现</h2>
-<div class="outline-text-2" id="text-org75a9eb7">
+<div id="outline-container-org57a82e8" class="outline-2">
+<h2 id="org57a82e8">实现</h2>
+<div class="outline-text-2" id="text-org57a82e8">
 <p>
 总共有三步
 </p>
 </div>
 
-<div id="outline-container-org16e67cf" class="outline-3">
-<h3 id="org16e67cf">把冰箱门打开</h3>
-<div class="outline-text-3" id="text-org16e67cf">
+<div id="outline-container-org0a878d0" class="outline-3">
+<h3 id="org0a878d0">把冰箱门打开</h3>
+<div class="outline-text-3" id="text-org0a878d0">
 <p>
 这一步是把当前的仓库 <code>checkout</code> 下来。
 </p>
@@ -233,9 +561,9 @@ Replay attack detection based on distortion by loudspeaker for voice authenticat
 </div>
 </div>
 
-<div id="outline-container-orgab44503" class="outline-3">
-<h3 id="orgab44503">把大象装进去</h3>
-<div class="outline-text-3" id="text-orgab44503">
+<div id="outline-container-orgd332ed1" class="outline-3">
+<h3 id="orgd332ed1">把大象装进去</h3>
+<div class="outline-text-3" id="text-orgd332ed1">
 <p>
 这一步先是安装 <code>Emacs 27.1</code> ，然后执行 <code>render.bat</code> 。
 </p>
@@ -323,9 +651,9 @@ Replay attack detection based on distortion by loudspeaker for voice authenticat
 </div>
 </div>
 
-<div id="outline-container-org509c8f8" class="outline-3">
-<h3 id="org509c8f8">把冰箱门带上</h3>
-<div class="outline-text-3" id="text-org509c8f8">
+<div id="outline-container-orgfc83921" class="outline-3">
+<h3 id="orgfc83921">把冰箱门带上</h3>
+<div class="outline-text-3" id="text-orgfc83921">
 <p>
 最后把项目再Commit Push上，就OK了。
 </p>
@@ -350,9 +678,9 @@ Replay attack detection based on distortion by loudspeaker for voice authenticat
 </div>
 </div>
 
-<div id="outline-container-orgee304fb" class="outline-2">
-<h2 id="orgee304fb">参考</h2>
-<div class="outline-text-2" id="text-orgee304fb">
+<div id="outline-container-orgfca2cc0" class="outline-2">
+<h2 id="orgfca2cc0">参考</h2>
+<div class="outline-text-2" id="text-orgfca2cc0">
 <ol class="org-ol">
 <li><a href="https://gitlab.com/_zngguvnf/org-static-blog-example/-/blob/master/publish.el">https://gitlab.com/_zngguvnf/org-static-blog-example/-/blob/master/publish.el</a></li>
 <li><a href="https://github.com/emacs-dashboard/emacs-dashboard/blob/master/.github/workflows/ci.yml">https://github.com/emacs-dashboard/emacs-dashboard/blob/master/.github/workflows/ci.yml</a></li>
@@ -384,9 +712,9 @@ Replay attack detection based on distortion by loudspeaker for voice authenticat
 看来事情并不是这么简单。
 </p>
 
-<div id="outline-container-orga555428" class="outline-2">
-<h2 id="orga555428">问题的复现</h2>
-<div class="outline-text-2" id="text-orga555428">
+<div id="outline-container-orgf69c9c5" class="outline-2">
+<h2 id="orgf69c9c5">问题的复现</h2>
+<div class="outline-text-2" id="text-orgf69c9c5">
 <p>
 因为自己只是在日常使用中经常遇到这个问题，并没有留意发生的条件，所以问题的第一步是复现这个问题。
 </p>
@@ -415,13 +743,13 @@ Replay attack detection based on distortion by loudspeaker for voice authenticat
 </div>
 </div>
 
-<div id="outline-container-orgaf708eb" class="outline-2">
-<h2 id="orgaf708eb">继续探究</h2>
-<div class="outline-text-2" id="text-orgaf708eb">
+<div id="outline-container-org49a6e03" class="outline-2">
+<h2 id="org49a6e03">继续探究</h2>
+<div class="outline-text-2" id="text-org49a6e03">
 </div>
-<div id="outline-container-org3e47f90" class="outline-3">
-<h3 id="org3e47f90">从dashboard出发</h3>
-<div class="outline-text-3" id="text-org3e47f90">
+<div id="outline-container-orga7683b6" class="outline-3">
+<h3 id="orga7683b6">从dashboard出发</h3>
+<div class="outline-text-3" id="text-orga7683b6">
 <p>
 dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是怎么修复的。
 重点就在 <code>dashboard-insert-startupify-lists</code> 这个函数里
@@ -495,9 +823,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org4bc2fdb" class="outline-3">
-<h3 id="org4bc2fdb">到recentf中去</h3>
-<div class="outline-text-3" id="text-org4bc2fdb">
+<div id="outline-container-orgcda6ddd" class="outline-3">
+<h3 id="orgcda6ddd">到recentf中去</h3>
+<div class="outline-text-3" id="text-orgcda6ddd">
 <p>
 <a href="https://gitlab.com/basil-conto/emacs/blob/master/lisp/recentf.el#L1030">点这里</a>看recentf源码
 </p>
@@ -524,9 +852,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org2224689" class="outline-3">
-<h3 id="org2224689">一个猜想</h3>
-<div class="outline-text-3" id="text-org2224689">
+<div id="outline-container-orgf103f6a" class="outline-3">
+<h3 id="orgf103f6a">一个猜想</h3>
+<div class="outline-text-3" id="text-orgf103f6a">
 <p>
 先不考虑第一次启动Emacs的话，问题变得简单了一些。存在org文件buffer的时候，刷新dashbaord没问题。不存在org文件buffer的时候，刷新dashboard就会出错。所以，一定是刷新dashbaord的时候，agenda会打开org文件，如果org文件已经在buffer中了，就不会 <code>find-file</code> ；否则调用 <code>find-file</code> 就会触发 <code>recentf-track-opened-file</code> ，将文件加入到 <code>recentf-list</code> 中。
 </p>
@@ -545,9 +873,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org82024c6" class="outline-3">
-<h3 id="org82024c6">深入dashboard-widgets</h3>
-<div class="outline-text-3" id="text-org82024c6">
+<div id="outline-container-org8ccda56" class="outline-3">
+<h3 id="org8ccda56">深入dashboard-widgets</h3>
+<div class="outline-text-3" id="text-org8ccda56">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="font-weight: bold;">defun</span> <span style="font-weight: bold;">dashboard-insert-recents</span> (list-size)
   <span style="font-style: italic;">"Add the list of LIST-SIZE items from recently edited files."</span>
@@ -593,9 +921,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-orgffdf47e" class="outline-2">
-<h2 id="orgffdf47e">结论</h2>
-<div class="outline-text-2" id="text-orgffdf47e">
+<div id="outline-container-org6c314bd" class="outline-2">
+<h2 id="org6c314bd">结论</h2>
+<div class="outline-text-2" id="text-org6c314bd">
 <p>
 所以，这个<a href="https://github.com/emacs-dashboard/emacs-dashboard/pull/83/">PR</a>压根没有修复Recent Files显示Agenda org files这个issue。它只在同时满足 <b>首次启动Emacs</b> 和 <b>agenda在recentf前面</b> 这两个条件时，它才会Work。
 </p>
@@ -605,9 +933,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </p>
 </div>
 
-<div id="outline-container-org2b2809c" class="outline-3">
-<h3 id="org2b2809c">1.修改dashboard的逻辑</h3>
-<div class="outline-text-3" id="text-org2b2809c">
+<div id="outline-container-orgd7ae9d3" class="outline-3">
+<h3 id="orgd7ae9d3">1.修改dashboard的逻辑</h3>
+<div class="outline-text-3" id="text-orgd7ae9d3">
 <p>
 在上面dashboard的代码中加两行，作用是每次完成一个item之后，都复原一次 <code>recentf-list</code> 。
 </p>
@@ -635,9 +963,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org349a1f3" class="outline-3">
-<h3 id="org349a1f3">2.重新定义g按键</h3>
-<div class="outline-text-3" id="text-org349a1f3">
+<div id="outline-container-org9b819f3" class="outline-3">
+<h3 id="org9b819f3">2.重新定义g按键</h3>
+<div class="outline-text-3" id="text-org9b819f3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(define-key dashboard-mode-map (kbd <span style="font-style: italic;">"g"</span>) #'my-dashboard-g)
 </pre>
@@ -669,9 +997,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 这是一篇用Emacs和Org编写的博客。
 </p>
 
-<div id="outline-container-org7995139" class="outline-2">
-<h2 id="org7995139">缘起</h2>
-<div class="outline-text-2" id="text-org7995139">
+<div id="outline-container-org07e58d4" class="outline-2">
+<h2 id="org07e58d4">缘起</h2>
+<div class="outline-text-2" id="text-org07e58d4">
 <p>
 最近突然想写博客了，其实之前也断断续续的写过一些，从一开始的CSDN到Github Pages，从pelican到hugo。
 </p>
@@ -702,9 +1030,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-orge97a957" class="outline-2">
-<h2 id="orge97a957">org-static-blog</h2>
-<div class="outline-text-2" id="text-orge97a957">
+<div id="outline-container-org9e2a1bd" class="outline-2">
+<h2 id="org9e2a1bd">org-static-blog</h2>
+<div class="outline-text-2" id="text-org9e2a1bd">
 <p>
 这个博客生成工具给我的感觉就是simple and brute force。
 </p>
@@ -747,9 +1075,9 @@ dashboard照理说已经修复了这个问题，我们先来看看PR83究竟是�
 </div>
 </div>
 
-<div id="outline-container-org4c4df69" class="outline-2">
-<h2 id="org4c4df69">结语</h2>
-<div class="outline-text-2" id="text-org4c4df69">
+<div id="outline-container-orgd9934dd" class="outline-2">
+<h2 id="orgd9934dd">结语</h2>
+<div class="outline-text-2" id="text-orgd9934dd">
 <p>
 最后立个flag，讲讲之后博客上会写些什么。
 </p>

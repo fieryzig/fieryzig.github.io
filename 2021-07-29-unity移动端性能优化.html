@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="alternate"
+      type="application/rss+xml"
+      href="https://fieryzig.github.io/rss.xml"
+      title="RSS feed for https://fieryzig.github.io">
+<title>Unity移动端性能优化</title>
+<meta name="author" content="fieryzig">
+<meta name="referrer" content="no-referrer">
+<link href="static/style.css" rel="stylesheet" type="text/css" />
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+</head>
+<body>
+<div id="preamble" class="status"><div class="header">
+<h1><a href="https://fieryzig.github.io" class="title">Les Frites</a></h1>
+<p class="text-muted">fieryzig's blog</p>
+<ul class="list-inline">
+<li class="list-inline-item"><a href="https://fieryzig.github.io/about.html">About</a></li>
+<li class="list-inline-item"><a href="https://fieryzig.github.io/tags.html">Tags</a></li>
+</ul>
+</div></div>
+<div id="content">
+<div class="post-date">29 Jul 2021</div><h1 class="post-title"><a href="https://fieryzig.github.io/2021-07-29-unity移动端性能优化.html">Unity移动端性能优化</a></h1>
+<p>
+最近读了<a href="https://blog.unity.com/technology/optimize-your-mobile-game-performance-tips-on-profiling-memory-and-code-architecture">Optimize your mobile game performance</a>，结合自己的实践，做一些笔记。
+</p>
+
+<div id="outline-container-org1866bc1" class="outline-2">
+<h2 id="org1866bc1">真机Profiling</h2>
+<div class="outline-text-2" id="text-org1866bc1">
+<p>
+Profiling所用到的主要工具是Unity自带的Profiler、Frame Debugger、Memory Debugger等。
+由于真机环境和Editor环境是不同的，因此做性能分析，最好还是在真机上调试。
+</p>
+
+<ol class="org-ol">
+<li>在 <code>Build Settings</code> 切换到对应的平台（Android）</li>
+<li>开启 <code>Development Build</code> ， <code>Autoconnect Profiler</code></li>
+<li><p>
+打包apk，在真机上安装运行
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">adb install xxxxx.apk
+</pre>
+</div></li>
+</ol>
+
+<p>
+<code>Autoconnect Profiler</code> 选项只适用于真机和主机在同一个网段下，通过Wifi连接。
+如果网络环境不允许，可以通过USB进行调试，需要adb做一下端口转发。
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">adb forward tcp:34999 localabstract:Unity-com.yyyyy.xxxxx
+</pre>
+</div>
+<p>
+端口号34999，和具体的Unity版本相关，可以打开Unity的Profiler，点击Editor按钮，可以列出 <code>AndroidPlayer(ADB@127.0.0.1:?????)</code> ，填写这里显示的端口号。
+</p>
+
+<p>
+至此，启动游戏，开启Record，就可以看到Record开始记录了，Happy Profiling！
+</p>
+</div>
+</div>
+
+<div id="outline-container-org973de8a" class="outline-2">
+<h2 id="org973de8a">Before Profiling</h2>
+<div class="outline-text-2" id="text-org973de8a">
+<p>
+Profiling的目的当然是性能优化，那性能优化的目标是什么？又如何确定瓶颈呢？
+</p>
+
+<ul class="org-ul">
+<li>性能优化的主要目标是 <b>FPS</b> （当然也有别的）
+理论上，运行达到30 fps需要每帧耗时不超过33.33ms；60 fps需要每帧耗时不超过16.66ms。
+然而在移动设备上，会有发热导致的降频情况，因此对于每帧的耗时要更小一些：30fps需要22ms/frame；60fps需要11ms/frame。</li>
+
+<li>确定是CPU瓶颈还是GPU瓶颈
+<ul class="org-ul">
+<li>CPU-Bound：如果在Profiler中看到 <code>Gfx.WaitForCommands</code> ，说明渲染线程已经就绪，在等待主线程</li>
+<li>GPU-Bound：如果在Profiler中看到 <code>Gfx.WaitForPresent</code> ，说明主线程已经就绪，等待GPU显示当前帧</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org979e664" class="outline-2">
+<h2 id="org979e664">UGUI</h2>
+<div class="outline-text-2" id="text-org979e664">
+<p>
+UGUI经常引发性能问题。Canvas组件生成和更新Mesh，并发起Draw Call。这个过程会很消耗性能，在使用UGUI的时候，要注意以下几点。
+</p>
+</div>
+
+<div id="outline-container-orga5b509c" class="outline-3">
+<h3 id="orga5b509c">拆分Canvas</h3>
+<div class="outline-text-3" id="text-orga5b509c">
+<p>
+如果有一个很庞大的Canvas（比如里面有上千个元素），更新其中的一个元素，会使整个Canvas进行更新，可能会产生CPU突峰。
+</p>
+
+<p>
+<b>Tips:</b>
+</p>
+<ul class="org-ul">
+<li>UGUI支持多个Canvas。将UI元素按照更新的频率拆分。静态的元素放在一个Canvas中；更新频繁的元素，把同时更新的元素放在同一个更小的sub-canvas中</li>
+<li>确保每个Canvas中的UI元素有相同的Z value、material和texture</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd9388f8" class="outline-3">
+<h3 id="orgd9388f8">隐藏看不到的UI元素</h3>
+<div class="outline-text-3" id="text-orgd9388f8">
+<p>
+将暂时看不到的UI元素disable掉，因为处于active的元素，可能会引起Draw Call。
+</p>
+
+<p>
+<b>Tips:</b>
+</p>
+<ul class="org-ul">
+<li>如果需要隐藏一个Canvas的可见性，不要disable GameObject，而要disable Canvas Component。这么做可以节省重建mesh和vertices的时间</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb9ca3db" class="outline-3">
+<h3 id="orgb9ca3db">少用GraphicRaycaster和Raycast Target</h3>
+<div class="outline-text-3" id="text-orgb9ca3db">
+<p>
+屏幕点击等输入事件需要GraphicRaycaster组件。它会遍历屏幕上的每个输入点，检查是否是UI RectTransform。
+<b>Tips:</b>
+</p>
+<ul class="org-ul">
+<li>移除从顶层Canvas层级中默认的GraphicRaycaster，只在需要有交互的UI元素上添加GraphicRaycaster组件</li>
+<li>在UI Text和Image中disable不需要的Raycast Target</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org2c060ff" class="outline-3">
+<h3 id="org2c060ff">避免使用Layout Groups</h3>
+<div class="outline-text-3" id="text-org2c060ff">
+<p>
+Layout Groups的Update效率很低，尽量少用。如果内部的UI元素不是动态的，那么不要使用。动态内容如果确实需要使用，不要将Layout Groups(Horizontal, Vertical, Grid)嵌套使用。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6759e04" class="outline-3">
+<h3 id="org6759e04">避免使用庞大的List View和Grid View</h3>
+<div class="outline-text-3" id="text-org6759e04">
+<p>
+<b>Tips:</b>
+</p>
+<ul class="org-ul">
+<li>如果需要做包含大量元素的List View或Grid View，使用对象池做UI元素的复用</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgc23f9bb" class="outline-3">
+<h3 id="orgc23f9bb">Canvas渲染模式</h3>
+<div class="outline-text-3" id="text-orgc23f9bb">
+<p>
+<b>Tips:</b>
+</p>
+<ul class="org-ul">
+<li>如果使用 <code>World Space</code> 渲染模式，要填写Event Camera</li>
+<li>尽量使用 <code>Screen Space - Overlay</code> 模式，不需要Camera</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0fe09e0" class="outline-3">
+<h3 id="org0fe09e0">降低OverDraw</h3>
+<div class="outline-text-3" id="text-org0fe09e0">
+<p>
+之后单独写一篇文章   
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org02695e7" class="outline-2">
+<h2 id="org02695e7">Further</h2>
+<div class="outline-text-2" id="text-org02695e7">
+<ul class="org-ul">
+<li>内存的GC优化</li>
+<li>一些编程上的细节优化</li>
+<li>GPU优化</li>
+<li>降低OverDraw的优化</li>
+</ul>
+</div>
+</div>
+<div class="taglist"><a href="https://fieryzig.github.io/tags.html">Tags</a>: <a href="https://fieryzig.github.io/tag-unity.html">Unity</a> </div></div>
+<div id="postamble" class="status"></div>
+</body>
+</html>
